@@ -3,15 +3,55 @@ import 'package:app_1/user/login.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/user/background.dart';
 
-class UserRegister extends StatelessWidget {
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-  final resetPasswordController = TextEditingController();
+// import 'package:graphql_flutter/graphql_flutter.dart';
+// import 'package:hasura_connect/hasura_connect.dart';
+
+// String url = 'https://enthms-graphql.safiwis.com/v1/graphql';
+// HasuraConnect hasuraConnect = HasuraConnect(url);
+
+class UserRegister extends StatefulWidget {
   UserRegister({Key? key}) : super(key: key);
+
+  @override
+  State<UserRegister> createState() => _UserRegisterState();
+}
+
+class _UserRegisterState extends State<UserRegister> {
+  String mutation = r'''
+  mutation Insert_patient_users {
+  insert_patient_users(objects: {
+  fullname: $fullname,
+   phone_number:  $phone_number,
+   password: $password,
+   resetpassword: $resetpassword,
+   }) {
+    affected_rows
+  }
+}
+''';
+
+  final nameController = TextEditingController();
+
+  final phoneController = TextEditingController();
+
+  final passwordController = TextEditingController();
+
+  final resetPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // return Mutation(
+    //   options: MutationOptions(
+    //     document: gql(mutation),
+    //     // update: (cache, result) {
+    //     //   return cache;
+    //     // },
+    //     // onCompleted: (dynamic resultdata) {
+    //     //   print(resultdata);
+    //     // },
+    //   ),
+    //   builder: (runMutation, result) {
     return Scaffold(
       // automatically resizes on keyboard input
       resizeToAvoidBottomInset: false,
@@ -186,7 +226,64 @@ class UserRegister extends StatelessWidget {
                       backgroundColor: Colors.blue,
                       textStyle: const TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {},
+                    // onPressed: () => runMutation({
+                    //   'fullname': nameController.text,
+                    //   'phone_number': phoneController.text,
+                    //   'password': passwordController.text,
+                    //   'resetpassword': resetPasswordController.text,
+                    // }),
+
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            // content: Text(nameController.text),
+                            title: const Text(
+                              'Bạn đã tạo tài khoản thành công',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(29),
+                                child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20, horizontal: 40),
+                                      backgroundColor: Colors.blue,
+                                      textStyle: const TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return const UserLogin();
+                                      }));
+                                    },
+                                    child: const Text(
+                                      'Đăng nhập ngay',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white
+                                      ),
+                                    )),
+                              )
+                            ],
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: <Widget>[
+                                  Text(nameController.text),
+                                  Text(phoneController.text),
+                                  Text(passwordController.text),
+                                  Text(resetPasswordController.text),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: const Text(
                       'Đăng kí',
                       style: TextStyle(color: Colors.white),
@@ -345,36 +442,39 @@ class UserRegister extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        // When the user presses the button, show an alert dialog containing
-        // the text that the user has entered into the text field.
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                // content: Text(nameController.text),
-                title: const Text('AlertDialog Title'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text(nameController.text),
-                      Text(phoneController.text),
-                      Text(passwordController.text),
-                      Text(resetPasswordController.text),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-        tooltip: 'Show me the value!',
-        child: const Icon(Icons.text_fields),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   // When the user presses the button, show an alert dialog containing
+      //   // the text that the user has entered into the text field.
+      //   onPressed: () {
+      //     showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return AlertDialog(
+      //           // content: Text(nameController.text),
+      //           title: const Text('AlertDialog Title'),
+      //           content: SingleChildScrollView(
+      //             child: ListBody(
+      //               children: <Widget>[
+      //                 Text(nameController.text),
+      //                 Text(phoneController.text),
+      //                 Text(passwordController.text),
+      //                 Text(resetPasswordController.text),
+      //               ],
+      //             ),
+      //           ),
+      //         );
+      //       },
+      //     );
+      //   },
+      //   tooltip: 'Show me the value!',
+      //   child: const Icon(Icons.text_fields),
+      // ),
     );
+    //  },
+    // );
   }
 }
+
 /*
  class PasswordInput extends StatelessWidget {
   final IconData icon;

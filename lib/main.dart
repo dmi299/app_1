@@ -1,9 +1,13 @@
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/loading.dart';
-import 'package:app_1/user/adduser.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/home.dart';
 // import 'package:graphql_flutter/graphql_flutter.dart';
+
+//import
+// import 'package:hasura_connect/hasura_connect.dart';
+// String url = 'https://enthms-graphql.safiwis.com/v1/graphql';
+// HasuraConnect hasuraConnect = HasuraConnect(url);
 
 void main() => runApp( MaterialApp(
     initialRoute: '/',
@@ -15,15 +19,26 @@ void main() => runApp( MaterialApp(
       '/body':(context) => const Body(),
     },
     ));
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    // final HttpLink httpLink =
-    //     HttpLink('https://fluttergraphql.herokuapp.com/v1/graphql');
-    return Container();
-  }
-}
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     final HttpLink httpLink =
+//         HttpLink('https://enthms-graphql.safiwis.com/v1/graphql');
+//     final ValueNotifier<GraphQLClient> client = ValueNotifier(
+//       GraphQLClient(
+//         link: httpLink,
+//         cache: GraphQLCache(
+//           store: HiveStore(),
+//         ),
+//       ),
+//     );
+//     return GraphQLProvider(
+//       client: client,
+//       child: MaterialApp(),
+//     );
+//   }
+// }
 
 
 
