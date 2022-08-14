@@ -25,7 +25,6 @@ class UserLogin extends StatelessWidget {
               height: size.height * 0.3,
             ),
 
-
             //textfield -> phone number
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -108,7 +107,7 @@ class UserLogin extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return const UserRegister();
+                      return UserRegister();
                     }));
                   },
                   child: const Text(

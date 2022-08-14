@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:app_1/user/background.dart';
 
 class UserRegister extends StatelessWidget {
-  const UserRegister({Key? key}) : super(key: key);
-
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final resetPasswordController = TextEditingController();
+  UserRegister({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,30 +25,154 @@ class UserRegister extends StatelessWidget {
                 width: 300,
                 height: size.height * 0.2,
               ),
-              const TextfiledInput(
-                icon: Icons.person,
-                hint: 'Họ và tên',
-                inputType: TextInputType.name,
-                inputAction: TextInputAction.done,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  height: size.height * 0.08,
+                  width: size.width * 0.8,
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[50]?.withOpacity(0.5),
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(29),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                          icon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.black,
+                            ),
+                          ),
+                          hintText: 'Họ và tên',
+                          border: InputBorder.none),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                ),
               ),
-              const TextfiledInput(
-                icon: Icons.phone,
-                hint: 'Số điện thoại',
-                inputType: TextInputType.number,
-                inputAction: TextInputAction.next,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  height: size.height * 0.08,
+                  width: size.width * 0.8,
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[50]?.withOpacity(0.5),
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(29),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: phoneController,
+                      decoration: const InputDecoration(
+                          icon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.black,
+                            ),
+                          ),
+                          hintText: 'Số điện thoại',
+                          border: InputBorder.none),
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  ),
+                ),
               ),
-              const PasswordInput(
-                icon: Icons.lock,
-                hint: 'Mật khẩu',
-                inputType: TextInputType.name,
-                inputAction: TextInputAction.done,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  height: size.height * 0.08,
+                  width: size.width * 0.8,
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[50]?.withOpacity(0.5),
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(29),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                          icon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Icon(
+                              Icons.lock,
+                              color: Colors.black,
+                            ),
+                          ),
+                          suffixIcon:
+                              Icon(Icons.visibility, color: Colors.black),
+                          hintText: 'Mật khẩu',
+                          border: InputBorder.none),
+                      obscureText: true, //hide password
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                ),
               ),
-              const PasswordInput(
-                icon: Icons.lock,
-                hint: 'Nhập lại mật khẩu',
-                inputType: TextInputType.name,
-                inputAction: TextInputAction.done,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  height: size.height * 0.08,
+                  width: size.width * 0.8,
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[50]?.withOpacity(0.5),
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(29),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: resetPasswordController,
+                      decoration: const InputDecoration(
+                          icon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Icon(
+                              Icons.lock,
+                              color: Colors.black,
+                            ),
+                          ),
+                          suffixIcon:
+                              Icon(Icons.visibility, color: Colors.black),
+                          hintText: 'Nhập lại Mật khẩu',
+                          border: InputBorder.none),
+                      obscureText: true, //hide password
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                ),
               ),
+
+              // TextfiledInput(
+              //   icon: Icons.person,
+              //   hint: 'Họ và tên',
+              //   inputType: TextInputType.text,
+              //   inputAction: TextInputAction.done,
+              // ),
+              // TextfiledInput(
+              //   icon: Icons.phone,
+              //   hint: 'Số điện thoại',
+              //   inputType: TextInputType.number,
+              //   inputAction: TextInputAction.next,
+              // ),
+              // const PasswordInput(
+              //   icon: Icons.lock,
+              //   hint: 'Mật khẩu',
+              //   inputType: TextInputType.name,
+              //   inputAction: TextInputAction.done,
+              // ),
+              // const PasswordInput(
+              //   icon: Icons.lock,
+              //   hint: 'Nhập lại mật khẩu',
+              //   inputType: TextInputType.name,
+              //   inputAction: TextInputAction.done,
+              // ),
+
               const SizedBox(height: 20),
               SizedBox(
                 width: size.width * 0.8,
@@ -155,46 +282,43 @@ class UserRegister extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 5),
-             
-                Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          // padding: EdgeInsets.all(20),
-                          // decoration: BoxDecoration(
-                          //   border: Border.all(
-                          //     width: 2,
-                          //     color: Colors.white,
-                          //   ),
-                          //   shape: BoxShape.circle,
-                          // ),
 
-                          child: TextButton(
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const Home();
-                                }));
-                              },
-                              child: Image.asset(
-                                'images/home.png',
-                                height: 40,
-                                width: 40,
-                              )),
-                        ),
-                        Image.asset(
-                          'images/fast-backward.png',
-                          height: 25,
-                          width: 25,
+              Row(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        // padding: EdgeInsets.all(20),
+                        // decoration: BoxDecoration(
+                        //   border: Border.all(
+                        //     width: 2,
+                        //     color: Colors.white,
+                        //   ),
+                        //   shape: BoxShape.circle,
+                        // ),
 
-                          )
-                      ],
-                      
-                    ),
-                    
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const Home();
+                              }));
+                            },
+                            child: Image.asset(
+                              'images/home.png',
+                              height: 40,
+                              width: 40,
+                            )),
+                      ),
+                      Image.asset(
+                        'images/fast-backward.png',
+                        height: 25,
+                        width: 25,
+                      )
+                    ],
+                  ),
                   const Text(
                     "Về trang chủ",
                     style: TextStyle(
@@ -203,9 +327,8 @@ class UserRegister extends StatelessWidget {
                     ),
                   ),
                 ],
-                  
-                ),
-              
+              ),
+
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,
               //   children: const [
@@ -218,16 +341,42 @@ class UserRegister extends StatelessWidget {
               //     ),
               //   ],
               // ),
-        
             ],
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                // content: Text(nameController.text),
+                title: const Text('AlertDialog Title'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text(nameController.text),
+                      Text(phoneController.text),
+                      Text(passwordController.text),
+                      Text(resetPasswordController.text),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        tooltip: 'Show me the value!',
+        child: const Icon(Icons.text_fields),
+      ),
     );
   }
 }
-
-class PasswordInput extends StatelessWidget {
+/*
+ class PasswordInput extends StatelessWidget {
   final IconData icon;
   final String hint;
   final TextInputType inputType;
@@ -275,15 +424,17 @@ class PasswordInput extends StatelessWidget {
     );
   }
 }
-
+*/
+/*
 class TextfiledInput extends StatelessWidget {
-  const TextfiledInput({
+  TextfiledInput({
     Key? key,
     required this.icon,
     required this.hint,
     required this.inputType,
     required this.inputAction,
   }) : super(key: key);
+  final myController = TextEditingController();
   final IconData icon;
   final String hint;
   final TextInputType inputType;
@@ -303,6 +454,7 @@ class TextfiledInput extends StatelessWidget {
         ),
         child: Center(
           child: TextField(
+            controller: myController,
             decoration: InputDecoration(
                 icon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -321,3 +473,4 @@ class TextfiledInput extends StatelessWidget {
     );
   }
 }
+*/

@@ -1,13 +1,11 @@
-// import 'dart:js';
-// @dart=2.9
-// import 'package:app_1/pages/choose_location.dart';
-// import 'dart:html';
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/loading.dart';
+import 'package:app_1/user/adduser.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/home.dart';
+// import 'package:graphql_flutter/graphql_flutter.dart';
 
-void main() => runApp(MaterialApp(
+void main() => runApp( MaterialApp(
     initialRoute: '/',
     debugShowCheckedModeBanner: false,//remove debug mode on appbar
     // initialRoute: '/loading',
@@ -17,6 +15,60 @@ void main() => runApp(MaterialApp(
       '/body':(context) => const Body(),
     },
     ));
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    // final HttpLink httpLink =
+    //     HttpLink('https://fluttergraphql.herokuapp.com/v1/graphql');
+    return Container();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

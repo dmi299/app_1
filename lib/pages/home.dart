@@ -136,8 +136,7 @@ class _HomeState extends State<Home> {
                   break;
                 case Menu.itemTwo:
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const UserRegister()),
+                    MaterialPageRoute(builder: (context) => UserRegister()),
                   );
                   break;
               }
