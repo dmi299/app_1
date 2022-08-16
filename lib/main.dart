@@ -9,16 +9,21 @@ import 'package:app_1/pages/home.dart';
 // String url = 'https://enthms-graphql.safiwis.com/v1/graphql';
 // HasuraConnect hasuraConnect = HasuraConnect(url);
 
-void main() => runApp( MaterialApp(
-    initialRoute: '/',
-    debugShowCheckedModeBanner: false,//remove debug mode on appbar
-    // initialRoute: '/loading',
-    routes: {
-      '/': (context) => const Loading(),
-      '/home': (context) => const Home(),
-      '/body':(context) => const Body(),
-    },
-    ));
+// import 'package:graphql_flutter/graphql_flutter.dart';
+void main() => runApp(MaterialApp(
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false, //remove debug mode on appbar
+      // initialRoute: '/loading',
+      routes: {
+        '/': (context) => const Loading(),
+        '/home': (context) => const Home(),
+        '/body': (context) => const Body(),
+      },
+    )
+    );
+
+
+  
 // class MyApp extends StatelessWidget {
 //   const MyApp({super.key});
 //   @override
@@ -35,7 +40,7 @@ void main() => runApp( MaterialApp(
 //     );
 //     return GraphQLProvider(
 //       client: client,
-//       child: MaterialApp(),
+//       child: const MaterialApp(),
 //     );
 //   }
 // }
