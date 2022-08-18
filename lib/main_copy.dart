@@ -25,10 +25,10 @@ void main() => runApp(
                               const GraphQLWidgetScreen(),
                         ),
                       );
+                      
                     },
                     child: const Text('GraphQL Widget'),
                   ),
-                  
                 ],
               ),
             ),

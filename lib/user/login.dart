@@ -1,4 +1,5 @@
 import 'package:app_1/pages/home.dart';
+import 'package:app_1/test.dart';
 import 'package:app_1/user/background.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,13 @@ class UserLogin extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {},
+                 onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Home();
+                    }));
+                  },
+
                   child: const Text(
                     'Đăng nhập',
                     style: TextStyle(color: Colors.white),
