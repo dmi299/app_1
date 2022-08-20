@@ -2,8 +2,8 @@ import 'package:app_1/pages/apointment.dart';
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/medical_history.dart';
 import 'package:app_1/pages/parking.dart';
+import 'package:app_1/test.dart';
 import 'package:app_1/user/login.dart';
-import 'package:app_1/user/register.dart';
 
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/map.dart';
@@ -136,7 +136,7 @@ class _HomeState extends State<Home> {
                   break;
                 case Menu.itemTwo:
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => UserRegister()),
+                    MaterialPageRoute(builder: (context) => const GraphQLWidgetScreen()),
                   );
                   break;
               }

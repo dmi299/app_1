@@ -1,10 +1,12 @@
 import 'package:app_1/user/login.dart';
+import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-const bool ENABLE_WEBSOCKETS = false;
+// const bool ENABLE_WEBSOCKETS = false;
 
 class GraphQLWidgetScreen extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const GraphQLWidgetScreen() : super();
 
   @override
@@ -49,10 +51,13 @@ class GraphQLWidgetScreen extends StatelessWidget {
 
     return GraphQLProvider(
       client: client,
-      child: const MaterialApp(
-        home: MyHomePage(
-          title: "Graphql Mutations",
-        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: UserRegister(),
+        routes: {
+          '/register': ((context) => UserRegister()),
+          '/login': ((context) => const UserLogin())
+        },
       ),
     );
   }
@@ -67,6 +72,7 @@ class MyHomePage extends StatefulWidget {
   final String? title;
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -85,88 +91,92 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('hihi'),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            // TextField(
-            //   decoration: const InputDecoration(
-            //     labelText: 'Number of repositories (default 50)',
-            //   ),
-            //   keyboardType: TextInputType.number,
-            //   onSubmitted: changeQuery,
-            // ),
-            Query(
-              options: QueryOptions(
-                document: gql(r'''
+      // body: Container(
+      // padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      // child: Column(
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   mainAxisSize: MainAxisSize.max,
+      //   children: <Widget>[
+      // TextField(
+      //   decoration: const InputDecoration(
+      //     labelText: 'Number of repositories (default 50)',
+      //   ),
+      //   keyboardType: TextInputType.number,
+      //   onSubmitted: changeQuery,
+      // ),
+
+      body: Query(
+          options: QueryOptions(
+            document: gql(r'''
                     query MyQuery{
                     patient_users {
-                        fullname
+                    fullname
                     phone_number
-                    password
-                    resetpassword
+                    
                     }
                   }
                 '''),
+            // variables: {
+            //   'nRepositories': nRepositories,
+            // },
+            // pollInterval: const Duration(seconds: 2000)
+          ),
+          builder: (QueryResult result,
+              {VoidCallback? refetch, FetchMore? fetchMore}) {
+            // if (result.data == null && !result.hasException) {
+            //   return const Text(
+            //     'Loading has completed, but both data and errors are null. '
+            //     'This should never be the case – please open an issue',
+            //   );
+            // }
 
-                // variables: {
-                //   'nRepositories': nRepositories,
-                // },
-                // pollInterval: 10,
-              ),
-              builder: withGenericHandling(
-                (QueryResult result, {VoidCallback? refetch, fetchMore}) {
-                  if (result.data == null && !result.hasException) {
-                    return const Text(
-                      'Loading has completed, but both data and errors are null. '
-                      'This should never be the case – please open an issue',
-                    );
-                  }
+            // if (result.hasException) {
+            //   return Text(result.exception.toString());
+            // }
 
-                  // final repositories =
-                  //     (result.data![' patient_users'] as List<dynamic>);
+            List? repositories = result.data?['patient_users'];
+            if (repositories == null) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (result.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: result.data!['patient_users'].length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListBody(
-                          children: [
-                            Text(result.data!['patient_users'][index]
-                                ['fullname']),
-                            Text(result.data!['patient_users'][index]
-                                ['phone_number']),
-                            Text(result.data!['patient_users'][index]
-                                ['password']),
-                            Text(result.data!['patient_users'][index]
-                                ['resetpassword']),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+            // final repositories =
+            //     (result.data![' patient_users'] as List<dynamic>);
 
-            FloatingActionButton(
-              // When the user presses the button, show an alert dialog containing
-              // the text that the user has entered into the text field.
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AddUser()
-                        // return const AddUser();
-                        ));
+            return ListView.builder(
+              itemCount: repositories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(result.data!['patient_users'][index]['fullname']),
+                  subtitle: Text(
+                      result.data!['patient_users'][index]['phone_number']),
+                  // Text(
+                  //     result.data!['patient_users'][index]['password']),
+                  // Text(result.data!['patient_users'][index]
+                  //     ['resetpassword']),
+                );
               },
-              tooltip: 'Show me the value!',
-              child: const Icon(Icons.text_fields),
-            ),
-          ],
-        ),
+            );
+          }),
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddUser()
+                  // return const AddUser();
+                  ));
+        },
+        tooltip: 'Show me the value!',
+        child: const Icon(Icons.text_fields),
       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
@@ -175,6 +185,7 @@ class AddUser extends StatefulWidget {
   const AddUser({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddUserState createState() => _AddUserState();
 }
 
@@ -190,6 +201,7 @@ class _AddUserState extends State<AddUser> {
       appBar: AppBar(
         title: const Text("Add user"),
       ),
+      // ignore: avoid_unnecessary_containers
       body: Container(
         child: Column(
           children: [
@@ -198,19 +210,15 @@ class _AddUserState extends State<AddUser> {
                 document: gql(r'''
                     mutation MyMutation ($fullname: String!, $phone_number: String!, $password: String!, $resetpassword: String!) {
                       insert_patient_users(objects: {fullname: $fullname,phone_number: $phone_number, password: $password, resetpassword:$resetpassword}) {
-                        returning{
-                          fullname,
-                          phone_number,
-                          password,
-                          resetpassword
-                        }
+                        
                     affected_rows
                   }
                 }
-'''),
-                update: (GraphQLDataProxy cache, QueryResult? result) {
-                  return cache;
-                },
+'''
+                    .replaceAll('\n', '')),
+                // update: (GraphQLDataProxy cache, QueryResult? result) {
+                //   return cache;
+                // },
                 onCompleted: (dynamic resultdata) {
                   Navigator.pop(context);
                 },
