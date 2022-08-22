@@ -1,6 +1,7 @@
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/loading.dart';
 import 'package:app_1/test.dart';
+import 'package:app_1/user/adduser.dart';
 import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false, //remove debug mode on appbar
       // initialRoute: '/loading',
       routes: {
-        '/': (context) =>  const Loading(),
+        '/': (context) =>  const GraphQLWidgetScreen(),
         '/home': (context) => const Home(),
         '/body': (context) => const Body(),
       },

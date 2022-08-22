@@ -3,7 +3,6 @@ import 'package:app_1/user/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/user/background.dart';
-
 // import 'package:app_1/graphql_bloc/main.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -246,9 +245,10 @@ class _UserRegisterState extends State<UserRegister> {
                           validator: (value) {
                             // add your custom validation here.
                             if (value!.isEmpty) {
+                              
                               return 'Vui lòng nhập mật khẩu';
                             }
-                            if (value.length < 6) {
+                            if (value.length < 3) {
                               return 'Mật khẩu quá ngắn';
                             }
                             return null;
