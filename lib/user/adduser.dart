@@ -3,155 +3,156 @@ import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/medical_history.dart';
 import 'package:app_1/pages/parking.dart';
 import 'package:app_1/test.dart';
-import 'package:app_1/user/login.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 // This is the type used by the popup menu below.
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    Key? key,
-    this.title,
-  }) : super(key: key);
+// class MyHomePage extends StatefulWidget {
+//   final String showdialog;
+//   const MyHomePage({
+//     Key? key,
+//     this.title,
+//     required this.showdialog
+//   }) : super(key: key);
 
-  final String? title;
+//   final String? title;
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _MyHomePageState createState() => _MyHomePageState();
-}
+//   @override
+//   // ignore: library_private_types_in_public_api
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController phoneController = TextEditingController();
+// class _MyHomePageState extends State<MyHomePage> {
+//   TextEditingController phoneController = TextEditingController();
 
-  TextEditingController passwordController = TextEditingController();
-  // int nRepositories = 50;
+//   TextEditingController passwordController = TextEditingController();
+//   // int nRepositories = 50;
 
-  // void changeQuery(String number) {
-  //   setState(() {
-  //     nRepositories = int.parse(number);
-  //   });
-  // }
+//   // void changeQuery(String number) {
+//   //   setState(() {
+//   //     nRepositories = int.parse(number);
+//   //   });
+//   // }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('hihi'),
-      ),
-      body: Query(
-          options: QueryOptions(
-            document: gql(r'''
-                   query MyQuery($phone_number: String!, $password: String! ) {
-  patient_users(where: {phone_number: {_eq: $phone_number}, password: {_eq:  $password}}) {
-   
-    phone_number
-    password
-    id
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('hihi'),
+//       ),
+//       body: Query(
+//           options: QueryOptions(
+//             document: gql(r'''
+//                    query MyQuery($phone_number: String!, $password: String! ) {
+//   patient_users(where: {phone_number: {_eq: $phone_number}, password: {_eq:  $password}}) {
 
+//     phone_number
+//     password
+//     id
+//   }
+// }
 
-                '''),
-          ),
-          builder: (QueryResult result,
-              {VoidCallback? refetch, FetchMore? fetchMore}) {
-            // List? repositories = result.data?['patient_users'];
-            // if (repositories == null) {
-            //   return const Center(child: CircularProgressIndicator());
-            // } else if (result.isLoading) {
-            //   return const Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
+//                 '''),
+//           ),
+//           builder: (QueryResult result,
+//               {VoidCallback? refetch, FetchMore? fetchMore}) {
+//             // List? repositories = result.data?['patient_users'];
+//             // if (repositories == null) {
+//             //   return const Center(child: CircularProgressIndicator());
+//             // } else if (result.isLoading) {
+//             //   return const Center(
+//             //     child: CircularProgressIndicator(),
+//             //   );
+//             // }
 
-            return ListView.builder(
-              // itemCount: repositories.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Center(
-                    child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      controller: phoneController,
-                      decoration: const InputDecoration(
-                          icon: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.black,
-                            ),
-                          ),
-                          // labelText: 'Họ và tên',
-                          hintText: 'phone',
-                          border: InputBorder.none),
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                          icon: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.black,
-                            ),
-                          ),
-                          // labelText: 'Họ và tên',
-                          hintText: 'password',
-                          border: InputBorder.none),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // if (result.data != null ||
-                        //     result.data!['patient_users'][index]
-                        //                 ['phone_number'] ==
-                        //             phoneController.text &&
-                        //         result.data!['patient_users'][index]
-                        //                 ['password'] ==
-                        //             passwordController.text) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const adduser(),
-                            ),
-                          );
-                        // } else {
-                        // showDialog(
-                        //     builder: (context) {
-                        //       return AlertDialog(
-                        //         content: SingleChildScrollView(
-                        //             // ignore: prefer_const_literals_to_create_immutables
-                        //             child: ListBody(children: <Widget>[
-                        //           // Text(result.data!['patient_users'][index]
-                        //           //     ['phone_number']),
-                        //           // Text(result.data!['patient_users'][index]
-                        //           //     ['password']),
-                        //           Text(phoneController.text),
-                        //            Text(passwordController.text),
+//             return ListView.builder(
+//               // itemCount: repositories.length,
+//               itemBuilder: (BuildContext context, int index) {
+//                 return Center(
+//                     child: Column(
+//                   children: <Widget>[
+//                     TextFormField(
+//                       controller: phoneController,
+//                       decoration: const InputDecoration(
+//                           icon: Padding(
+//                             padding: EdgeInsets.symmetric(horizontal: 20.0),
+//                             child: Icon(
+//                               Icons.person,
+//                               color: Colors.black,
+//                             ),
+//                           ),
+//                           // labelText: 'Họ và tên',
+//                           hintText: 'phone',
+//                           border: InputBorder.none),
+//                     ),
+//                     TextFormField(
+//                       controller: passwordController,
+//                       decoration: const InputDecoration(
+//                           icon: Padding(
+//                             padding: EdgeInsets.symmetric(horizontal: 20.0),
+//                             child: Icon(
+//                               Icons.person,
+//                               color: Colors.black,
+//                             ),
+//                           ),
+//                           // labelText: 'Họ và tên',
+//                           hintText: 'password',
+//                           border: InputBorder.none),
+//                     ),
+//                     TextButton(
+//                       onPressed: () {
+//                         // if (result.data != null ||
+//                         //     result.data!['patient_users'][index]
+//                         //                 ['phone_number'] ==
+//                         //             phoneController.text &&
+//                         //         result.data!['patient_users'][index]
+//                         //                 ['password'] ==
+//                         //             passwordController.text) {
+//                         Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                             builder: (context) => const adduser(),
+//                           ),
+//                         );
+//                         // } else {
+//                         // showDialog(
+//                         //     builder: (context) {
+//                         //       return AlertDialog(
+//                         //         content: SingleChildScrollView(
+//                         //             // ignore: prefer_const_literals_to_create_immutables
+//                         //             child: ListBody(children: <Widget>[
+//                         //           // Text(result.data!['patient_users'][index]
+//                         //           //     ['phone_number']),
+//                         //           // Text(result.data!['patient_users'][index]
+//                         //           //     ['password']),
+//                         //           Text(phoneController.text),
+//                         //            Text(passwordController.text),
 
-                        //         ])),
-                        //       );
-                        //     },
-                        //     context: context);
-                      },
-                      //},
-                      child: const Text('here'),
-                    ),
-                  ],
-                ));
-              },
-            );
-          }),
-    );
-  }
-}
+//                         //         ])),
+//                         //       );
+//                         //     },
+//                         //     context: context);
+//                       },
+//                       //},
+//                       child: const Text('here'),
+//                     ),
+//                   ],
+//                 ));
+//               },
+//             );
+//           }),
+//     );
+//   }
+// }
 
 enum Menu { itemOne, itemTwo }
 
 class adduser extends StatefulWidget {
-  const adduser({Key? key}) : super(key: key);
+  const adduser({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<adduser> createState() => _adduserState();
@@ -274,7 +275,9 @@ class _adduserState extends State<adduser> {
                 case Menu.itemOne:
                   // Navigator.of(context).push(
                   //   MaterialPageRoute(
-                  //       builder: (context) => const AccountInfo()),
+                  //       builder: (context) => const AccountInfo(
+                  //             showdialog: '',
+                  //           )),
                   // );
                   showDialog(
                       builder: (context) {
@@ -287,6 +290,7 @@ class _adduserState extends State<adduser> {
                             // Text(result.data!['patient_users'][index]
                             //     ['password']),
                             Text(phoneController.text),
+
                             Text(passwordController.text),
                           ])),
                         );
@@ -305,7 +309,9 @@ class _adduserState extends State<adduser> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
                   const PopupMenuItem(
                     value: Menu.itemOne,
-                    child: Text('Thông tin tài khoản'),
+                    child: Text(
+                      'Thông tin tài khoản',
+                    ),
                   ),
                   const PopupMenuItem(
                     value: Menu.itemTwo,
@@ -317,19 +323,43 @@ class _adduserState extends State<adduser> {
   }
 }
 
-class AccountInfo extends StatefulWidget {
-  const AccountInfo({Key? key}) : super(key: key);
+class AccountInfo extends StatelessWidget {
+  Future<dynamic> showDialogLogin ;
+  
+  AccountInfo({Key? key, required this.showDialogLogin}) : super(key: key);
 
-  @override
-  State<AccountInfo> createState() => _AccountInfoState();
-}
-
-class _AccountInfoState extends State<AccountInfo> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CupertinoAlertDialog(
-        content: ListBody(children: <Widget>[]),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Second screen')),
+      body: Center(
+        
+        child: ElevatedButton(
+          
+          child: const Text(
+            'here',
+            
+            ),
+          
+          onPressed:
+          () {
+            
+            showDialog(
+                context: context,
+                builder: (context) { 
+                  return const AlertDialog(
+                    content: SingleChildScrollView(
+                          
+                    ),
+                  );
+                });
+          },
+        ),
+
+        // child: Text(
+        //   showdialog,
+        //   style: TextStyle(fontSize: 24),
+        // ),
       ),
     );
   }

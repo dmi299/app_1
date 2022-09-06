@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:app_1/pages/home.dart';
+import 'package:app_1/user/adduser.dart';
 import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 // const bool ENABLE_WEBSOCKETS = false;
@@ -9,6 +13,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class GraphQLWidgetScreen extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const GraphQLWidgetScreen() : super();
+
+  get textToSend => null;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +64,8 @@ class GraphQLWidgetScreen extends StatelessWidget {
         routes: {
           '/register': ((context) => UserRegister()),
           '/login': ((context) => const UserLogin()),
-          '/home': (context) => const Home()
+          '/home': (context) => const Home(),
+          // '/adduser': (context) =>   adduser()
         },
       ),
     );
@@ -79,14 +86,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController phoneController = TextEditingController();
-   TextEditingController passWordController = TextEditingController();
+  TextEditingController passWordController = TextEditingController();
+  get showdialog => showdialog;
 //  int nRepositories = 50;
-
-//   void changeQuery(String number) {
-//     setState(() {
-//       nRepositories = int.parse(number);
-//     });
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -96,44 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            // TextField(
-            //   controller: phoneController,
-            //   decoration: const InputDecoration(
-            //       // labelText: 'Number of repositories (default 50)',
-            //       ),
-            //   keyboardType: TextInputType.text,
-            //   // onSubmitted: changeQuery,
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     print('completed');
-
-            //     if(phoneController.text == ){
-            //     showDialog(
-            //         builder: (context) {
-            //           return AlertDialog(
-            //             content: SingleChildScrollView(
-            //                 // ignore: prefer_const_literals_to_create_immutables
-            //                 child: ListBody(children: <Widget>[
-            //               Text(phoneController.text)
-            //               // Text(result.data!['patients'][index]
-            //               //     ['password']),
-            //               // Text(phonenumberController.text),
-            //               // Text(passwordController.text),
-            //             ])),
-            //           );
-            //         },
-            //         context: context);}
-            //   },
-            //   child: const Text('Đăng nhập ngay'),
-            // ),
-            Query(
-              options: QueryOptions(
-                document: gql(r'''
+        child: Query(
+          options: QueryOptions(
+            document: gql(r'''
   query MyQuery {
   patient_users{
     fullname
@@ -143,113 +110,150 @@ class _MyHomePageState extends State<MyHomePage> {
     
   }
 }
+
+
 '''),
 
-                // variables: {
-                //   'nRepositories': nRepositories,
-                // },
-                //pollInterval: 10,
-              ),
-              builder: withGenericHandling(
-                (QueryResult result, {refetch, fetchMore}) {
-                  if (result.data == null && !result.hasException) {
-                    return const Text(
-                      'Loading has completed, but both data and errors are null. '
-                      'This should never be the case – please open an issue',
-                    );
-                  } else {
-                    print('completed');
-                  }
+            // variables: {
+            //   'phone_number': phoneController.text,
+            // },
+            //pollInterval: 10,
+          ),
+          builder: withGenericHandling(
+            (QueryResult result, {refetch, fetchMore}) {
+              // if (result.data == null && !result.hasException) {
+              //   return const Text(
+              //     'Loading has completed, but both data and errors are null. '
+              //     'This should never be the case – please open an issue',
+              //   );
+              // } else {
+              //   print('completed');
+              // }
 
-                  // result.data can be either a [List<dynamic>] or a [Map<String, dynamic>]
-                  // final repositories = (result.data!['patient_users']['repositories']
-                  //     as List<dynamic>);
-                  List? repositories = result.data?['patient_users'];
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: repositories!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListBody(
-                          children: [
-                            Form(
-                              child: TextField(
-                                controller: phoneController,
-                              
-                                decoration: const InputDecoration(
-                                    // labelText: 'Number of repositories (default 50)',
-                                    ),
-                                keyboardType: TextInputType.text,
-                                // onSubmitted: changeQuery,
+              // result.data can be either a [List<dynamic>] or a [Map<String, dynamic>]
+              // final repositories = (result.data!['patient_users']['repositories']
+              //     as List<dynamic>);
+              List? repositories = result.data?['patient_users'];
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: repositories!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: phoneController,
+
+                          decoration: const InputDecoration(
+                              // labelText: 'Number of repositories (default 50)',
                               ),
-                            ),
-                            TextField(
-                              controller: passWordController,
-                              decoration: const InputDecoration(
-                                  // labelText: 'Number of repositories (default 50)',
-                                  ),
-                              keyboardType: TextInputType.text,
-                              // onSubmitted: changeQuery,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (phoneController.text ==
-                                    result.data!['patient_users'][index]
-                                        ['phone_number'] && passWordController.text ==result.data!['patient_users'][index]['password']) {
-                                  showDialog(
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: SingleChildScrollView(
-                                              // ignore: prefer_const_literals_to_create_immutables
-                                              child:
-                                                  ListBody(children: <Widget>[
-                                            Text(result.data!['patient_users']
-                                                [index]['phone_number']),
-                                            Text(result.data!['patient_users']
-                                                [index]['fullname']),
-                                            // Text(phonenumberController.text),
-                                            // Text(passwordController.text),
-                                          ])
-                                          ),
-                                        );
-                                      },
-                                      context: context);
-                                } else {
-                                  final snackBar = SnackBar(
-                                    content: const Text('Tài khoản của bạn chưa đúng'),
-                                    action: SnackBarAction(
-                                      label: 'Thoát',
-                                      onPressed: () {
-                                        // Some code to undo the change.
-                                      },
-                                    ),
-                                  );
-                                  // Find the ScaffoldMessenger in the widget tree
-                                  // and use it to show a SnackBar.
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
-                              },
-                              child: const Text('Đăng nhập ngay'),
-                            ),
+                          keyboardType: TextInputType.text,
+                          // onSubmitted: changeQuery,
+                        ),
+                        TextFormField(
+                          controller: passWordController,
+                          decoration: const InputDecoration(
+                              // labelText: 'Number of repositories (default 50)',
+                              ),
+                          keyboardType: TextInputType.text,
+                        ),
 
-                            // Text(result.data!['patient_users'][index]
-                            //     ['fullname']),
-                            // Text(result.data!['patient_users'][index]
-                            //     ['patient_id']),
-                            Text(result.data!['patient_users'][index]
-                                ['phone_number']),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+                        ElevatedButton(
+                          onPressed: () {
+                            _sendData(result, index, context);
+                            if (phoneController.text ==
+                                    result.data!['patient_users'][index]
+                                        ['phone_number'] &&
+                                passWordController.text ==
+                                    result.data!['patient_users'][index]
+                                        ['password']) {
+                              //  showDialog(
+                              //       builder: (context) {
+                              //         return AlertDialog(
+                              //           content: SingleChildScrollView(
+                              //               // ignore: prefer_const_literals_to_create_immutables
+                              //               child: ListBody(children: <Widget>[
+                              //             Text(result.data!['patient_users']
+                              //                 [index]['phone_number']),
+                              //             Text(result.data!['patient_users']
+                              //                 [index]['fullname']),
+                              //           ])),
+                              //         );
+                              //       },
+                              //       context: context);
+                              dialog(result, index, context);
+                            } else {
+                              final snackBar = SnackBar(
+                                content:
+                                    const Text('Tài khoản của bạn chưa đúng'),
+                                action: SnackBarAction(
+                                  label: 'Thoát',
+                                  onPressed: () {
+                                    // Some code to undo the change.
+                                  },
+                                ),
+                              );
+                              // Find the ScaffoldMessenger in the widget tree
+                              // and use it to show a SnackBar.
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                          },
+                          child: const Text('Đăng nhập ngay'),
+                        ),
+
+                        //call data
+                        // Text(result.data!['patient_users'][index]
+                        //     ['phone_number']),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  Future<dynamic> dialog(
+      QueryResult<Object?> result, int index, BuildContext context) {
+    return showDialog(
+        builder: (context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+                // ignore: prefer_const_literals_to_create_immutables
+                child: ListBody(children: <Widget>[
+              Text(result.data!['patient_users'][index]['phone_number']),
+              Text(result.data!['patient_users'][index]['fullname']),
+            ])),
+          );
+        },
+        context: context) as dynamic;
+  }
+
+  // void _sendData(BuildContext context, QueryResult<Object?> result, int index) {
+  //   // String textToSend = phoneController.text;
+  //   SchedulerBinding.instance.addPostFrameCallback((_) {
+  //     Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => AccountInfo(
+  //             showDialogLogin: dialog(result, index, context),
+  //           ),
+  //         ));
+  //   });
+  // }
+  void _sendData(result, index, BuildContext context) {
+    // String textToSend = phoneController.text;
+    dynamic showdialog = dialog(result, index, context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AccountInfo(
+            showDialogLogin: showdialog,
+          ),
+        ));
   }
 }
 
