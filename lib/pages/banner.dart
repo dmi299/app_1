@@ -96,7 +96,7 @@ class Banner extends StatelessWidget {
             aspectRatio: 16 / 9,
             autoPlayCurve: Curves.fastOutSlowIn,
             enableInfiniteScroll: true,
-            autoPlayAnimationDuration: const Duration(microseconds: 800),
+            autoPlayAnimationDuration: const Duration(microseconds: 400),
             viewportFraction: 0.8,
           ),
         ),

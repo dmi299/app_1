@@ -31,19 +31,19 @@ class _UserLoginState extends State<UserLogin> {
         child: Query(
             options: QueryOptions(
               document: gql(r'''
-   query MyQuery {
-  patient_users{
-    fullname
+    query MyQuery ($phone_number: String!){
+  patient_users(where: {phone_number: {_eq: $phone_number}}){
     phone_number
+    fullname
     password
-    
-    
+    birthday
+    patient_id
   }
 }
                 '''),
-              // variables: {
-              //   'phone_number': phoneController.text,
-              // },
+              variables: {
+                'phone_number': '0766651677',
+              },
             ),
             builder: (QueryResult result,
                 {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -147,15 +147,68 @@ class _UserLoginState extends State<UserLogin> {
                                               // ignore: prefer_const_literals_to_create_immutables
                                               child:
                                                   ListBody(children: <Widget>[
-                                            Text(result.data!['patient_users']
-                                                [index]['phone_number']),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  icon: Icon(
+                                                    Icons.phone,
+                                                    color: Colors.black,
+                                                  ),
+                                                  hintText: 'Số điện thoại',
+                                                  border: InputBorder.none),
+                                            ),
+                                            TextFormField(
+                                             
+                                                decoration:
+                                                    const InputDecoration(
+                                                        icon: Icon(
+                                                          Icons.person,
+                                                          color: Colors.black,
+                                                        ),
+                                                        hintText: 'Mật khẩu',
+                                                        border:
+                                                            InputBorder.none)),
+                                            Text(
+                                              
+                                              result.data!['patient_users']
+                                                [index]['phone_number'],
+                                              
+                                                ),
                                             Text(result.data!['patient_users']
                                                 [index]['fullname']),
                                           ])),
                                         );
                                       },
                                       context: context);
-                                  Navigator.pushNamed(context, '/login');
+                                  // Column(
+                                  //   children: <Widget>[
+                                  //     // SizedBox(
+                                  //     //   height: ,
+                                  //     // )
+                                  //     Row(
+                                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                                  //       children: <Widget>[
+                                  //         const Icon(
+                                  //           Icons.arrow_back,
+
+                                  //         ),
+                                  //         Container(
+                                  //           margin: EdgeInsets.only(top: 30),
+                                  //           child: Stack(
+                                  //             children: const [
+                                  //               CircleAvatar(
+                                  //                 radius: 30,
+                                  //                 backgroundImage: AssetImage('assets/images/logo.png'),
+                                  //                 )
+                                  //             ],
+                                  //           ),
+                                  //         )
+                                  //       ],
+                                  //     )
+                                  //   ],
+                                  // );
+
+                                  Navigator.pushNamed(context, '/');
                                 } else {
                                   final snackBar = SnackBar(
                                     content: const Text(

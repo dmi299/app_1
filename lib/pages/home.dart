@@ -1,78 +1,3 @@
-// import "package:flutter/material.dart";
-
-// void main() => runApp(const MyApp());
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       home: Home(),
-//     );
-//   }
-// }
-
-// class Home extends StatefulWidget {
-//   const Home({Key? key}) : super(key: key);
-
-//   @override
-// // ignore: library_private_types_in_public_api
-//   _HomeState createState() => _HomeState();
-// }
-
-// class _HomeState extends State<Home> {
-//   final titleController = TextEditingController();
-//   final subtitleController = TextEditingController();
-//   String text = "No Value Entered";
-//   String text1 = "No Value Entered";
-  
-//   void _setText() {
-//     setState(() {
-//       text = titleController.text;
-//       text1 = subtitleController.text;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: const Text('GeeksforGeeks'),
-//           backgroundColor: Colors.green,
-//         ),
-//         body: Column(
-//           children: [
-//             TextFormField(
-//               decoration: const InputDecoration(labelText: 'Title'),
-//               controller: titleController,
-//             ),
-//             TextFormField(
-//               decoration: const InputDecoration(labelText: 'Title'),
-//               controller: subtitleController,
-//             ),
-
-//             const SizedBox(
-//               height: 8,
-//             ),
-//             ElevatedButton(
-//                 onPressed: _setText,
-//                 style: ButtonStyle(
-//                     elevation: MaterialStateProperty.all(8),
-//                     backgroundColor: MaterialStateProperty.all(Colors.green)),
-//                 child: const Text('Submit')),
-
-            
-//             const SizedBox(
-//               height: 20,
-//             ),
-//             Text(text),
-//             Text(text1)
-//           ],
-//         ));
-//   }
-// }
-
 import 'package:app_1/pages/apointment.dart';
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/medical_history.dart';
@@ -183,18 +108,6 @@ class _HomeState extends State<Home> {
           // size: 50,
         ),
       ),
-
-      // actions: <Widget>[
-      //   IconButton(
-      //     onPressed: () => {
-      //       // Navigator.pushNamed(context, '/location');
-      //     },
-      //     icon: const Icon(Icons.person),
-      //     color: Colors.blue,
-      //     // iconSize: 35.0,
-      //     // label: const Text('Đăng xuất'),
-      //   ),
-      // ],
       actions: <Widget>[
         // This button presents popup menu items.
         PopupMenuButton<Menu>(
@@ -212,7 +125,7 @@ class _HomeState extends State<Home> {
                   break;
                 case Menu.itemTwo:
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) =>  UserRegister()),
+                    MaterialPageRoute(builder: (context) =>  const GraphQLWidgetScreen()),
                   );
                   break;
               }

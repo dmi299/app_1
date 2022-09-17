@@ -358,8 +358,8 @@ class Banner extends StatelessWidget {
       //             bottomRight: Radius.circular(36),
       //           )),
       //     ),
-
-      child: Expanded(
+    
+      // child: Expanded(
         // bottom: 0,
         // left: 0,
         // right: 0,
@@ -433,7 +433,7 @@ class Banner extends StatelessWidget {
             viewportFraction: 1.0,
           ),
         ),
-      ),
+      //),
     );
   }
 }

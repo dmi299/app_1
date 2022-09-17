@@ -249,7 +249,7 @@ class _UserRegisterState extends State<UserRegister> {
                               
                               return 'Vui lòng nhập mật khẩu';
                             }
-                            if (value.length < 3) {
+                            if (value.length < 2) {
                               return 'Mật khẩu quá ngắn';
                             }
                             return null;

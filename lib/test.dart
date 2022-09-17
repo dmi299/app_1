@@ -35,10 +35,10 @@ class GraphQLWidgetScreen extends StatelessWidget {
       client: client,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const MyHomePage(),
+        // home: const MyHomePage(),
         routes: {
-          // '/': ((context) => const UserLogin()),
-          '/login': (((context) => const UserLogin())),
+          '/': ((context) => const UserLogin()),
+          // '/login': (((context) => const UserLogin())),
           '/register': ((context) => UserRegister()),
           // '/adduser': (context) =>   adduser()
         },
@@ -70,10 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _setText() {
     setState(() {
       text = phoneController.text;
-      
     });
   }
-   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // title: Text(widget.title!),
           ),
       body: Container(
-        
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Query(
-          
           options: QueryOptions(
             document: gql(r'''
                     query MyQuery ($phone_number: String!){
@@ -99,15 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
 '''),
 
             variables: {
-              'phone_number': '1',
+              'phone_number': '0766651677',
             },
 
             // pollInterval: 10,
           ),
-          
           builder: withGenericHandling(
             (QueryResult result, {refetch, fetchMore}) {
-              
               // if (result.data == null && !result.hasException) {
               //   return const Text(
               //     'Loading has completed, but both data and errors are null. '
@@ -122,84 +117,87 @@ class _MyHomePageState extends State<MyHomePage> {
               //     as List<dynamic>);
 
               List? repositories = result.data?['patient_users'];
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: repositories!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: <Widget>[
-                        TextFormField(
-                          controller: phoneController,
-                          decoration: const InputDecoration(
-                              // labelText: 'Number of repositories (default 50)',
-                              ),
-                          keyboardType: TextInputType.text,
-                          // onSubmitted: changeQuery,
-                        ),
-                        TextFormField(
-                          controller: passWordController,
-                          decoration: const InputDecoration(
-                              // labelText: 'Number of repositories (default 50)',
-                              ),
-                          keyboardType: TextInputType.text,
-                        ),
+              return Row(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: repositories!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: <Widget>[
+                            TextFormField(
+                              controller: phoneController,
+                              decoration: const InputDecoration(
+                                  // labelText: 'Number of repositories (default 50)',
+                                  ),
+                              keyboardType: TextInputType.text,
+                              // onSubmitted: changeQuery,
+                            ),
+                            TextFormField(
+                              controller: passWordController,
+                              decoration: const InputDecoration(
+                                  // labelText: 'Number of repositories (default 50)',
+                                  ),
+                              keyboardType: TextInputType.text,
+                            ),
 
-                        ElevatedButton(
-                          onPressed: () {
-                            // _sendData(result, index, context);
-                            _setText();
-                            if (phoneController.text ==
-                                    result.data!['patient_users'][index]
-                                        ['phone_number'] &&
-                                passWordController.text ==
-                                    result.data!['patient_users'][index]
-                                        ['password']) {
-                              // showDialog(
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         content: SingleChildScrollView(
-                              //             // ignore: prefer_const_literals_to_create_immutables
-                              //             child: ListBody(children: <Widget>[
-                              //           Text(result.data!['patient_users']
-                              //               [index]['phone_number']),
-                              //           Text(result.data!['patient_users']
-                              //               [index]['fullname']),
-                              //         ])),
-                              //       );
-                              //     },
-                              //     context: context);
-                              dialog(result, index, context);
+                            ElevatedButton(
+                              onPressed: () {
+                                // _sendData(result, index, context);
+                                _setText();
+                                if (phoneController.text ==
+                                        result.data!['patient_users'][index]
+                                            ['phone_number'] &&
+                                    passWordController.text ==
+                                        result.data!['patient_users'][index]
+                                            ['password']) {
+                                  // showDialog(
+                                  //     builder: (context) {
+                                  //       return AlertDialog(
+                                  //         content: SingleChildScrollView(
+                                  //             // ignore: prefer_const_literals_to_create_immutables
+                                  //             child: ListBody(children: <Widget>[
+                                  //           Text(result.data!['patient_users']
+                                  //               [index]['phone_number']),
+                                  //           Text(result.data!['patient_users']
+                                  //               [index]['fullname']),
+                                  //         ])),
+                                  //       );
+                                  //     },
+                                  //     context: context);
+                                  dialog(result, index, context);
+                                } else {
+                                  final snackBar = SnackBar(
+                                    content:
+                                        const Text('Tài khoản của bạn chưa đúng'),
+                                    action: SnackBarAction(
+                                      label: 'Thoát',
+                                      onPressed: () {
+                                        // Some code to undo the change.
+                                      },
+                                    ),
+                                  );
+                                  // Find the ScaffoldMessenger in the widget tree
+                                  // and use it to show a SnackBar.
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
+                              },
+                              child: const Text('Đăng nhập ngay'),
+                            ),
 
-                            } else {
-                              final snackBar = SnackBar(
-                                content:
-                                    const Text('Tài khoản của bạn chưa đúng'),
-                                action: SnackBarAction(
-                                  label: 'Thoát',
-                                  onPressed: () {
-                                    // Some code to undo the change.
-                                  },
-                                ),
-                              );
-                              // Find the ScaffoldMessenger in the widget tree
-                              // and use it to show a SnackBar.
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            }
-                          },
-                          child: const Text('Đăng nhập ngay'),
-                        ),
+                            //call data
 
-                        //call data
-
-                        // Text(result.data!['patient_users'][index]
-                        //     ['phone_number']),
-                        // Text(result.data!['patient_users'][index]['password']),
-                        // Text(result.data!['patient_users'][index]['fullname']),
-                      ],
-                    );
-                  },
-                ),
+                            // Text(result.data!['patient_users'][index]
+                            //     ['phone_number']),
+                            // Text(result.data!['patient_users'][index]['password']),
+                            // Text(result.data!['patient_users'][index]['fullname']),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             },
           ),
