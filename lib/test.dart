@@ -1,11 +1,7 @@
-import 'dart:ffi';
-
-import 'package:app_1/pages/home.dart';
 import 'package:app_1/user/adduser.dart';
 import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 // const bool ENABLE_WEBSOCKETS = false;
@@ -25,46 +21,25 @@ class GraphQLWidgetScreen extends StatelessWidget {
     final authLink = AuthLink(
       // ignore: undefined_identifier
       getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-
       // 'Bearer mmMAHGD13s5FVrfVrL09cuq88W64E5sz4gXNeC477ZOfl6s44VMhfs5q2vaZfKXB',
     );
 
     var link = authLink.concat(httpLink);
-
-    // if (ENABLE_WEBSOCKETS) {
-    //   final websocketLink =
-    //       WebSocketLink('ws://classic-pig-88.hasura.app/v1/graphql');
-
-    //   link = Link.split(
-    //     (request) => request.isSubscription,
-    //     websocketLink,
-    //     link,
-    //   );
-    // }
-
     final client = ValueNotifier<GraphQLClient>(
       GraphQLClient(
         cache: GraphQLCache(),
         link: link,
       ),
     );
-
-    // return GraphQLProvider(
-    //   client: client,
-    //   child: const CacheProvider(
-    //     child: MyHomePage(),
-    //   ),
-    // );
-
     return GraphQLProvider(
       client: client,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: const MyHomePage(),
         routes: {
+          // '/': ((context) => const UserLogin()),
+          '/login': (((context) => const UserLogin())),
           '/register': ((context) => UserRegister()),
-          '/login': ((context) => const UserLogin()),
-          '/home': (context) => const Home(),
           // '/adduser': (context) =>   adduser()
         },
       ),
@@ -87,9 +62,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passWordController = TextEditingController();
+
+  String text = "No Value Entered";
+
   get showdialog => showdialog;
 //  int nRepositories = 50;
-
+  void _setText() {
+    setState(() {
+      text = phoneController.text;
+      
+    });
+  }
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,30 +81,33 @@ class _MyHomePageState extends State<MyHomePage> {
           // title: Text(widget.title!),
           ),
       body: Container(
+        
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Query(
+          
           options: QueryOptions(
             document: gql(r'''
-  query MyQuery {
-  patient_users{
-    fullname
+                    query MyQuery ($phone_number: String!){
+  patient_users(where: {phone_number: {_eq: $phone_number}}){
     phone_number
+    fullname
     password
-    
-    
+    birthday
+    patient_id
   }
 }
-
-
 '''),
 
-            // variables: {
-            //   'phone_number': phoneController.text,
-            // },
-            //pollInterval: 10,
+            variables: {
+              'phone_number': '1',
+            },
+
+            // pollInterval: 10,
           ),
+          
           builder: withGenericHandling(
             (QueryResult result, {refetch, fetchMore}) {
+              
               // if (result.data == null && !result.hasException) {
               //   return const Text(
               //     'Loading has completed, but both data and errors are null. '
@@ -133,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // result.data can be either a [List<dynamic>] or a [Map<String, dynamic>]
               // final repositories = (result.data!['patient_users']['repositories']
               //     as List<dynamic>);
+
               List? repositories = result.data?['patient_users'];
               return Expanded(
                 child: ListView.builder(
@@ -142,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         TextFormField(
                           controller: phoneController,
-
                           decoration: const InputDecoration(
                               // labelText: 'Number of repositories (default 50)',
                               ),
@@ -159,28 +146,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         ElevatedButton(
                           onPressed: () {
-                            _sendData(result, index, context);
+                            // _sendData(result, index, context);
+                            _setText();
                             if (phoneController.text ==
                                     result.data!['patient_users'][index]
                                         ['phone_number'] &&
                                 passWordController.text ==
                                     result.data!['patient_users'][index]
                                         ['password']) {
-                              //  showDialog(
-                              //       builder: (context) {
-                              //         return AlertDialog(
-                              //           content: SingleChildScrollView(
-                              //               // ignore: prefer_const_literals_to_create_immutables
-                              //               child: ListBody(children: <Widget>[
-                              //             Text(result.data!['patient_users']
-                              //                 [index]['phone_number']),
-                              //             Text(result.data!['patient_users']
-                              //                 [index]['fullname']),
-                              //           ])),
-                              //         );
-                              //       },
-                              //       context: context);
+                              // showDialog(
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         content: SingleChildScrollView(
+                              //             // ignore: prefer_const_literals_to_create_immutables
+                              //             child: ListBody(children: <Widget>[
+                              //           Text(result.data!['patient_users']
+                              //               [index]['phone_number']),
+                              //           Text(result.data!['patient_users']
+                              //               [index]['fullname']),
+                              //         ])),
+                              //       );
+                              //     },
+                              //     context: context);
                               dialog(result, index, context);
+
                             } else {
                               final snackBar = SnackBar(
                                 content:
@@ -202,8 +191,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
 
                         //call data
+
                         // Text(result.data!['patient_users'][index]
                         //     ['phone_number']),
+                        // Text(result.data!['patient_users'][index]['password']),
+                        // Text(result.data!['patient_users'][index]['fullname']),
                       ],
                     );
                   },
@@ -225,6 +217,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 // ignore: prefer_const_literals_to_create_immutables
                 child: ListBody(children: <Widget>[
               Text(result.data!['patient_users'][index]['phone_number']),
+              Text(result.data!['patient_users'][index]['password']),
+              Text(result.data!['patient_users'][index]['birthday']),
               Text(result.data!['patient_users'][index]['fullname']),
             ])),
           );

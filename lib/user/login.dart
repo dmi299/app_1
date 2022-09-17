@@ -155,7 +155,7 @@ class _UserLoginState extends State<UserLogin> {
                                         );
                                       },
                                       context: context);
-                                  Navigator.pushNamed(context, '/adduser');
+                                  Navigator.pushNamed(context, '/login');
                                 } else {
                                   final snackBar = SnackBar(
                                     content: const Text(

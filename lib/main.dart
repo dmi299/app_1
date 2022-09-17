@@ -1,3 +1,5 @@
+
+
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/loading.dart';
 import 'package:app_1/test.dart';
@@ -6,64 +8,18 @@ import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/home.dart';
-// import 'test.dart' show GraphQLWidgetScreen;
-//import
-// import 'package:hasura_connect/hasura_connect.dart';
-// String url = 'https://enthms-graphql.safiwis.com/v1/graphql';
-// HasuraConnect hasuraConnect = HasuraConnect(url);
-
-// import 'package:graphql_flutter/graphql_flutter.dart';
 void main() => runApp(MaterialApp(
       initialRoute: '/',
       debugShowCheckedModeBanner: false, //remove debug mode on appbar
       // initialRoute: '/loading',
       routes: {
-        '/': (context) =>  const GraphQLWidgetScreen(),
+        '/': (context) =>  const Loading(),
         '/home': (context) => const Home(),
         '/body': (context) => const Body(),
+        
       },
     ));
 
-// const bool ENABLE_WEBSOCKETS = false;
-
-// class GraphQLWidgetScreen extends StatelessWidget {
-//   const GraphQLWidgetScreen({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     final HttpLink httpLink =
-//         HttpLink('https://enthms-graphql.safiwis.com/v1/graphql');
-
-//     final authLink = AuthLink(
-//       // ignore: undefined_identifier
-//       getToken: () async => 'Bearer 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',
-//     );
-
-//     var link = authLink.concat(httpLink);
-
-//     if (ENABLE_WEBSOCKETS) {
-//       final websocketLink = WebSocketLink('ws://localhost:8080/ws/graphql');
-
-//       link = Link.split(
-//         (request) => request.isSubscription,
-//         websocketLink,
-//         link,
-//       );
-//     }
-
-//     final ValueNotifier<GraphQLClient> client = ValueNotifier(
-//       GraphQLClient(
-//         link: httpLink,
-//         cache: GraphQLCache(),
-//       ),
-//     );
-//     return GraphQLProvider(
-//       client: client,
-//       child: const CacheProvider(
-//         child: MaterialApp(),
-//       ),
-//     );
-//   }
-// }
 
 
 

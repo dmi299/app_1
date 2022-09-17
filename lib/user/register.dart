@@ -1,4 +1,5 @@
 import 'package:app_1/pages/home.dart';
+import 'package:app_1/test.dart';
 import 'package:app_1/user/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,8 @@ class _UserRegisterState extends State<UserRegister> {
           child: Mutation(
             options: MutationOptions(
               document: gql(r'''
-                    mutation MyMutation ($fullname: String!, $phone_number: String!, $password: String!, $resetpassword: String!) {
-                      insert_patient_users(objects: {fullname: $fullname,phone_number: $phone_number, password: $password, resetpassword:$resetpassword}) {
+                    mutation MyMutation ($fullname: String!, $phone_number: String!, $password: String!) {
+                      insert_patient_users(objects: {fullname: $fullname,phone_number: $phone_number, password: $password}) {
                         
                     affected_rows
                   }
@@ -399,15 +400,13 @@ class _UserRegisterState extends State<UserRegister> {
                                                     phoneController.text,
                                                 'password':
                                                     passwordController.text,
-                                                'resetpassword':
-                                                    resetPasswordController
-                                                        .text,
+                                                
                                               });
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const UserLogin(),
+                                                      const GraphQLWidgetScreen(),
                                                 ),
                                               );
                                             },
