@@ -44,7 +44,6 @@ class _UserRegisterState extends State<UserRegister> {
               document: gql(r'''
                     mutation MyMutation ($fullname: String!, $phone_number: String!, $password: String!) {
                       insert_patient_users(objects: {fullname: $fullname,phone_number: $phone_number, password: $password}) {
-                        
                     affected_rows
                   }
                 }
@@ -58,6 +57,7 @@ class _UserRegisterState extends State<UserRegister> {
                 return cache;
               },
             ),
+            
             builder: (RunMutation runMutation, QueryResult? result) {
               return Form(
                 key: _formKey,

@@ -1,3 +1,4 @@
+import 'package:app_1/pages/home.dart';
 import 'package:app_1/user/adduser.dart';
 import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
@@ -5,13 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 // const bool ENABLE_WEBSOCKETS = false;
-
 class GraphQLWidgetScreen extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const GraphQLWidgetScreen() : super();
-
   get textToSend => null;
-
   @override
   Widget build(BuildContext context) {
     final httpLink = HttpLink('https://enthms-graphql.safiwis.com/v1/graphql',
@@ -23,7 +21,6 @@ class GraphQLWidgetScreen extends StatelessWidget {
       getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
       // 'Bearer mmMAHGD13s5FVrfVrL09cuq88W64E5sz4gXNeC477ZOfl6s44VMhfs5q2vaZfKXB',
     );
-
     var link = authLink.concat(httpLink);
     final client = ValueNotifier<GraphQLClient>(
       GraphQLClient(
@@ -35,10 +32,10 @@ class GraphQLWidgetScreen extends StatelessWidget {
       client: client,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        // home: const MyHomePage(),
+        home: const UserLogin(),
         routes: {
-          '/': ((context) => const UserLogin()),
-          // '/login': (((context) => const UserLogin())),
+          // '/': ((context) => const UserLogin()),
+          '/home': (((context) => const Home())),
           '/register': ((context) => UserRegister()),
           // '/adduser': (context) =>   adduser()
         },
@@ -75,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
           // title: Text(widget.title!),
@@ -84,8 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Query(
           options: QueryOptions(
             document: gql(r'''
-                    query MyQuery ($phone_number: String!){
-  patient_users(where: {phone_number: {_eq: $phone_number}}){
+                    query MyQuery{
+  patient_users{
     phone_number
     fullname
     password
@@ -95,9 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 '''),
 
-            variables: {
-              'phone_number': '0766651677',
-            },
+            // variables: {
+            //   'phone_number': phoneController.text,
+            // },
 
             // pollInterval: 10,
           ),
@@ -117,29 +115,77 @@ class _MyHomePageState extends State<MyHomePage> {
               //     as List<dynamic>);
 
               List? repositories = result.data?['patient_users'];
+
               return Row(
                 children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    width: size.width * 0.8,
+                    decoration: BoxDecoration(
+                      // color: Colors.grey[600]?.withOpacity(0.5),
+                      color: Colors.grey[50],
+
+                      borderRadius: BorderRadius.circular(29),
+                    ),
+                    child: TextField(
+                      controller: phoneController,
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.person,
+                            color: Colors.black,
+                          ),
+                          hintText: 'Số điện thoại',
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
                       itemCount: repositories!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Column(
                           children: <Widget>[
-                            TextFormField(
-                              controller: phoneController,
-                              decoration: const InputDecoration(
-                                  // labelText: 'Number of repositories (default 50)',
-                                  ),
-                              keyboardType: TextInputType.text,
-                              // onSubmitted: changeQuery,
-                            ),
-                            TextFormField(
-                              controller: passWordController,
-                              decoration: const InputDecoration(
-                                  // labelText: 'Number of repositories (default 50)',
-                                  ),
-                              keyboardType: TextInputType.text,
-                            ),
+                            //     Container(
+                            //   margin: const EdgeInsets.symmetric(vertical: 10),
+                            //   padding: const EdgeInsets.symmetric(
+                            //       horizontal: 20, vertical: 10),
+                            //   width: size.width * 0.8,
+                            //   decoration: BoxDecoration(
+                            //     // color: Colors.grey[600]?.withOpacity(0.5),
+                            //     color: Colors.grey[50],
+
+                            //     borderRadius: BorderRadius.circular(29),
+                            //   ),
+                            //   child: TextField(
+                            //     controller: phoneController,
+                            //     decoration: const InputDecoration(
+                            //         icon: Icon(
+                            //           Icons.person,
+                            //           color: Colors.black,
+                            //         ),
+                            //         hintText: 'Số điện thoại',
+                            //         border: InputBorder.none),
+                            //   ),
+                            // ),
+                            const SizedBox(height: 10),
+                            // TextFormField(
+                            //   controller: phoneController,
+                            //   decoration: const InputDecoration(
+                            //       // labelText: 'Number of repositories (default 50)',
+                            //       ),
+                            //   keyboardType: TextInputType.text,
+
+                            //   // onSubmitted: changeQuery,
+                            // ),
+                            // TextFormField(
+                            //   controller: passWordController,
+                            //   decoration: const InputDecoration(
+                            //       // labelText: 'Number of repositories (default 50)',
+                            //       ),
+                            //   keyboardType: TextInputType.text,
+                            // ),
 
                             ElevatedButton(
                               onPressed: () {
@@ -168,8 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   dialog(result, index, context);
                                 } else {
                                   final snackBar = SnackBar(
-                                    content:
-                                        const Text('Tài khoản của bạn chưa đúng'),
+                                    content: const Text(
+                                        'Tài khoản của bạn chưa đúng'),
                                     action: SnackBarAction(
                                       label: 'Thoát',
                                       onPressed: () {
@@ -188,10 +234,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
                             //call data
 
-                            // Text(result.data!['patient_users'][index]
-                            //     ['phone_number']),
-                            // Text(result.data!['patient_users'][index]['password']),
-                            // Text(result.data!['patient_users'][index]['fullname']),
+                            Text(result.data!['patient_users'][index]
+                                ['phone_number']),
+                            Text(result.data!['patient_users'][index]
+                                ['password']),
+                            Text(result.data!['patient_users'][index]
+                                ['fullname']),
                           ],
                         );
                       },
@@ -216,7 +264,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListBody(children: <Widget>[
               Text(result.data!['patient_users'][index]['phone_number']),
               Text(result.data!['patient_users'][index]['password']),
-              Text(result.data!['patient_users'][index]['birthday']),
+              // Text(result.data!['patient_users'][index]['birthday']),
               Text(result.data!['patient_users'][index]['fullname']),
             ])),
           );
