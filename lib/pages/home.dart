@@ -8,37 +8,69 @@ import 'package:app_1/user/register.dart';
 
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/map.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 // This is the type used by the popup menu below.
 enum Menu { itemOne, itemTwo }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  bool isUser = false;
+  var patient;
+  Home({Key? key, required this.isUser, required this.patient})
+      : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Home> createState() =>
+      _HomeState(isUser: isUser, patient: patient);
 }
 
 class _HomeState extends State<Home> {
+  bool isUser = false;
+  var patient;
+  _HomeState({Key? key, required this.isUser, required this.patient});
+  Widget page = const Body();
   int _selectedIndex = 0;
-  void onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+
+  void onTap(int index) async {
+    print('isUser: ${isUser}; patient: ${patient}');
+    if ((isUser == false || patient == "") && index > 0 && index < 4) {
+      final snackBar = SnackBar(
+        content: const Text('Đăng nhập để xem các mục này'),
+        action: SnackBarAction(
+          label: 'Thoát',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      setState(
+        () {
+          _selectedIndex = index;
+          if (index == 0) {
+            page = const Body();
+          } else if (index == 1) {
+            page = const Apoitment();
+          } else if (index == 2) {
+            page = MedicalHistory(
+              patient: patient,
+            );
+          } else if (index == 3) {
+            page = const Parking();
+          } else if (index == 4) {
+            page = const Map();
+          }
+        },
+      );
+    }
   }
 
-  List pages = [
-    const Body(),
-    const Apoitment(),
-    const MedicalHistory(),
-    const Parking(),
-    const Map()
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: pages[_selectedIndex],
+      body: page,
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -120,12 +152,15 @@ class _HomeState extends State<Home> {
               switch (item) {
                 case Menu.itemOne:
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const GraphQLWidgetScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const GraphQLWidgetScreen()),
                   );
                   break;
                 case Menu.itemTwo:
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) =>  const GraphQLWidgetScreen()),
+                    MaterialPageRoute<GraphQLWidgetScreen>(
+                      builder: (BuildContext context) => UserRegister(),
+                    ),
                   );
                   break;
               }

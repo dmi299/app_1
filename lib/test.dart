@@ -35,7 +35,7 @@ class GraphQLWidgetScreen extends StatelessWidget {
         home: const UserLogin(),
         routes: {
           // '/': ((context) => const UserLogin()),
-          '/home': (((context) => const Home())),
+          '/home': (((context) => Home(isUser: false,patient: "",))),
           '/register': ((context) => UserRegister()),
           // '/adduser': (context) =>   adduser()
         },

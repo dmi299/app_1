@@ -57,7 +57,6 @@ class _UserRegisterState extends State<UserRegister> {
                 return cache;
               },
             ),
-            
             builder: (RunMutation runMutation, QueryResult? result) {
               return Form(
                 key: _formKey,
@@ -246,7 +245,6 @@ class _UserRegisterState extends State<UserRegister> {
                           validator: (value) {
                             // add your custom validation here.
                             if (value!.isEmpty) {
-                              
                               return 'Vui lòng nhập mật khẩu';
                             }
                             if (value.length < 2) {
@@ -360,21 +358,22 @@ class _UserRegisterState extends State<UserRegister> {
                             if (_formKey.currentState!.validate()) {
                               //check if form data are valid,
                               //your process task ahead if all data are valid
-                              final showdialog = showCupertinoDialog(//showdialog
+                              final showdialog = showCupertinoDialog(
+                                //showdialog
                                 context: context,
                                 builder: (context) {
-                                  return CupertinoAlertDialog( //alertdialog
+                                  return CupertinoAlertDialog(
+                                    //alertdialog
                                     // backgroundColor: Colors.amber[100],
                                     content: SingleChildScrollView(
                                       child: ListBody(
                                         children: <Widget>[
                                           const Text(
-                                              'Bạn đã đăng kí tài khoản thành công ',
-                                              style: TextStyle(
+                                            'Bạn đã đăng kí tài khoản thành công ',
+                                            style: TextStyle(
                                                 fontSize: 26,
-                                                fontWeight: FontWeight.bold
-                                              ),
-                                              ),
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                           //icon
                                           Container(
                                             margin: const EdgeInsets.symmetric(
@@ -400,7 +399,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                     phoneController.text,
                                                 'password':
                                                     passwordController.text,
-                                                
                                               });
                                               Navigator.push(
                                                 context,
@@ -531,7 +529,7 @@ class _UserRegisterState extends State<UserRegister> {
                                   onPressed: () {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return const Home();
+                                      return Home(isUser: false, patient: "",);
                                     }));
                                   },
                                   child: Image.asset(

@@ -14,7 +14,7 @@ void main() => runApp(MaterialApp(
       // initialRoute: '/loading',
       routes: {
         '/': (context) =>  const Loading(),
-        '/home': (context) => const Home(),
+        '/home': (context) => Home(isUser: false,patient: "",),
         '/body': (context) => const Body(),
         
       },

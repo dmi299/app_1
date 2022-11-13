@@ -3,7 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key,}) : super(key: key);
+  const Body({
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     //It will provie us total height and width of our screen
@@ -25,22 +27,27 @@ class Body extends StatelessWidget {
               //     padding: const EdgeInsets.all(40.0),
               //     children: const <Widget>[
               child: Row(
-                children: const <Widget>[
-                  CategoryCard(
-                    title: "Lịch khám",
-                    imgSrc: "images/lich-kham.png",
-                  ),
-                  CategoryCard(
-                    title: "Đặt hẹn",
-                    imgSrc: "images/dat-hen.png",
-                  ),
-                  CategoryCard(
-                    title: "Khám công ty",
-                    imgSrc: "images/kham-cong-ty.png",
-                  ),
-                  CategoryCard(
-                    title: "Khám cá nhân",
-                    imgSrc: "images/kham-ca-nhan.png",
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Row(children: const <Widget>[
+                      CategoryCard(
+                        title: "Lịch khám",
+                        imgSrc: "images/lich-kham.png",
+                      ),
+                      CategoryCard(
+                        title: "Đặt hẹn",
+                        imgSrc: "images/dat-hen.png",
+                      ),
+                      CategoryCard(
+                        title: "Khám công ty",
+                        imgSrc: "images/kham-cong-ty.png",
+                      ),
+                      CategoryCard(
+                        title: "Khám cá nhân",
+                        imgSrc: "images/kham-ca-nhan.png",
+                      ),
+                    ]),
                   ),
                 ],
               )),
@@ -134,7 +141,7 @@ class Body extends StatelessWidget {
                         ),
                         const ContentCard(
                           imgIconPath: 'images/phone.png',
-                          text: 'Đội ngũ chăm sóc khách hàng nhắc giờ hẹn.',
+                          text: 'Đội ngũ chăm sóc khách hàng nhắc hẹn.',
                         ),
                         const ContentCard(
                           imgIconPath: 'images/waiting-room.png',
@@ -171,7 +178,7 @@ class Body extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
-                            ),
+                          ),
                         )),
                       ],
                     )
@@ -200,7 +207,7 @@ class ContentCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(width: 20),
+        const SizedBox(width: 10),
         SizedBox(
           height: 20,
           // padding: const EdgeInsets.all(20),
@@ -358,81 +365,71 @@ class Banner extends StatelessWidget {
       //             bottomRight: Radius.circular(36),
       //           )),
       //     ),
-    
+
       // child: Expanded(
-        // bottom: 0,
-        // left: 0,
-        // right: 0,
-        child: CarouselSlider(
-          items: [
-            //1st Image of Slider
-            Container(
-              // margin: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
+      // bottom: 0,
+      // left: 0,
+      // right: 0,
+      child: CarouselSlider(
+        items: [
+          //1st Image of Slider
+          Container(
+            // margin: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
                 image: const DecorationImage(
-                  image: AssetImage('images/banner_01.jpg'), 
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            //2st Image of Slider
-            Container(
-              margin: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: AssetImage('images/banner_02.jpg'), 
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            //3st Image of Slider
-            Container(
-              margin: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: AssetImage('images/banner_03.jpg'), 
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            //4st Image of Slider
-            Container(
-              margin: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: AssetImage('images/banner_04.jpg'), 
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            //5st Image of Slider
-            Container(
-              margin: const EdgeInsets.all(6.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-               image: const DecorationImage(
-                  image: AssetImage('images/banner_05.jpg'), 
-                  fit: BoxFit.cover
-                )
-              ),
-            )
-          ],
-          //Slider Container properties
-          options: CarouselOptions(
-            height: 180.0,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            aspectRatio: 16 / 9,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enableInfiniteScroll: true,
-            autoPlayAnimationDuration: const Duration(microseconds: 800),
-            viewportFraction: 1.0,
+                    image: AssetImage('images/banner_01.jpg'),
+                    fit: BoxFit.cover)),
           ),
+          //2st Image of Slider
+          Container(
+            margin: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: const DecorationImage(
+                    image: AssetImage('images/banner_02.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          //3st Image of Slider
+          Container(
+            margin: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: const DecorationImage(
+                    image: AssetImage('images/banner_03.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          //4st Image of Slider
+          Container(
+            margin: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: const DecorationImage(
+                    image: AssetImage('images/banner_04.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          //5st Image of Slider
+          Container(
+            margin: const EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: const DecorationImage(
+                    image: AssetImage('images/banner_05.jpg'),
+                    fit: BoxFit.cover)),
+          )
+        ],
+        //Slider Container properties
+        options: CarouselOptions(
+          height: 180.0,
+          enlargeCenterPage: true,
+          autoPlay: true,
+          aspectRatio: 16 / 9,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enableInfiniteScroll: true,
+          autoPlayAnimationDuration: const Duration(microseconds: 800),
+          viewportFraction: 1.0,
         ),
+      ),
       //),
     );
   }
