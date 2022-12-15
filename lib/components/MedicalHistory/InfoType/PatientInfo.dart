@@ -60,18 +60,50 @@ class HavePatientInfo extends StatelessWidget {
       width: size.width,
       child: Wrap(
         children: <Widget>[
-          infoText(
-              devideSize: 1,
-              infoKey: "Họ và tên",
-              infoValue: patient['patient']['fullname']),
-          infoText(
-              devideSize: 1,
-              infoKey: "Địa chỉ",
-              infoValue: '423/43 Ung Văn Khiêm,P.25,Q.Bình Thạnh,TP.HCM'),
-          infoText(
-              devideSize: 2, infoKey: "Ngày sinh", infoValue: '29-10-2012'),
-          infoText(devideSize: 2, infoKey: "Giới tính", infoValue: 'Nam'),
-          const PatientMedicalHistory(),
+          if (patient['patient']['fullname'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Họ và tên",
+                infoValue: patient['patient']['fullname']),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: "Họ và tên", infoValue: ""),
+          ],
+          if (patient['patient']['address'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Địa chỉ",
+                infoValue: patient['patient']['address']),
+          ] else ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Địa chỉ",
+                infoValue: patient['patient']['']),
+          ],
+          if (patient['patient']['birthday'] != null) ...[
+            infoText(
+                devideSize: 2,
+                infoKey: "Ngày sinh",
+                infoValue: patient['patient']['birthday']),
+          ] else ...[
+            infoText(
+                devideSize: 2,
+                infoKey: "Ngày sinh",
+                infoValue: patient['patient']['']),
+          ],
+          if (patient['patient']['gender'] != null) ...[
+            infoText(
+                devideSize: 2,
+                infoKey: "Giới tính",
+                infoValue: patient['patient']['gender']),
+          ] else ...[
+            infoText(
+                devideSize: 2,
+                infoKey: "Giới tính",
+                infoValue: patient['patient']['']),
+          ],
+          PatientMedicalHistoryDetail(
+            patient: patient,
+          ),
         ],
       ),
     );

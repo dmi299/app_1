@@ -20,8 +20,7 @@ class Home extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Home> createState() =>
-      _HomeState(isUser: isUser, patient: patient);
+  State<Home> createState() => _HomeState(isUser: isUser, patient: patient);
 }
 
 class _HomeState extends State<Home> {
@@ -143,39 +142,55 @@ class _HomeState extends State<Home> {
       actions: <Widget>[
         // This button presents popup menu items.
         PopupMenuButton<Menu>(
-            icon: const Icon(
-              Icons.person,
-              color: Colors.blue,
+          icon: const Icon(
+            Icons.person,
+            color: Colors.blue,
+          ),
+          // Callback that sets the selected popup menu item.
+          onSelected: (Menu item) {
+            switch (item) {
+              case Menu.itemOne:
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const GraphQLWidgetScreen()),
+                );
+                break;
+              case Menu.itemTwo:
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const GraphQLWidgetScreenRegister(),
+                  ),
+                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute<GraphQLWidgetScreen>(
+                //     builder: (BuildContext context) => UserRegister(),
+                //   ),
+                // );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //       builder: (context) => const GraphQLWidgetScreen()),
+                // );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute<GraphQLWidgetScreen>(
+                //     builder: (BuildContext context) => UserRegister(),
+                //   ),
+                // );
+                break;
+            }
+            setState(() {});
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+            const PopupMenuItem(
+              value: Menu.itemOne,
+              child: Text("Đăng nhập"),
             ),
-            // Callback that sets the selected popup menu item.
-            onSelected: (Menu item) {
-              switch (item) {
-                case Menu.itemOne:
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const GraphQLWidgetScreen()),
-                  );
-                  break;
-                case Menu.itemTwo:
-                  Navigator.of(context).push(
-                    MaterialPageRoute<GraphQLWidgetScreen>(
-                      builder: (BuildContext context) => UserRegister(),
-                    ),
-                  );
-                  break;
-              }
-              setState(() {});
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-                  const PopupMenuItem(
-                    value: Menu.itemOne,
-                    child: Text("Đăng nhập"),
-                  ),
-                  const PopupMenuItem(
-                    value: Menu.itemTwo,
-                    child: Text("Đăng kí"),
-                  ),
-                ]),
+            const PopupMenuItem(
+              value: Menu.itemTwo,
+              child: Text("Đăng kí"),
+            ),
+          ],
+        ),
       ],
     );
   }

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:app_1/components/Buttons.dart';
 import 'package:app_1/components/Field.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 class SubclinicalInfo extends StatelessWidget {
   String SubType;
-  SubclinicalInfo({Key? key, required this.SubType}) : super(key: key);
+  var data_interface;
+  SubclinicalInfo(
+      {Key? key, required this.SubType, required this.data_interface})
+      : super(key: key);
   static const String _title = 'Flutter Code Sample';
   @override
   Widget build(BuildContext context) {
@@ -14,9 +19,11 @@ class SubclinicalInfo extends StatelessWidget {
       child: Column(
         children: <Widget>[
           if (SubType == "XN")
-            TableTest()
+            TableTest(data_interface: data_interface)
           else if (SubType == "ECG") ...[
-            _ECGInfoState(),
+            _ECGInfoState(
+              data_interface: data_interface,
+            ),
           ]
         ],
       ),
@@ -25,8 +32,9 @@ class SubclinicalInfo extends StatelessWidget {
 }
 
 class TableTest extends StatefulWidget {
+  var data_interface;
+  TableTest({Key? key, required this.data_interface}) : super(key: key);
   @override
-  TableTest({Key? key}) : super(key: key);
   State<TableTest> createState() => _TableTestState();
 }
 
@@ -41,141 +49,164 @@ class _TableTestState extends State<TableTest> {
             padding: EdgeInsets.only(top: 17, bottom: 17),
             child: Wrap(
               children: [
-                Heading2(devideSize: 1, infoValue: 'Tóm tắt xét nghiệm 3 năm'),
+                Heading2(devideSize: 1, infoValue: 'Xét nghiệm'),
               ],
             ),
           ),
-          infoText(
-              devideSize: 1,
-              infoKey: 'Bác sĩ chỉ định',
-              infoValue: 'Nguyễn Văn A'),
-          infoText(
-              devideSize: 1, infoKey: "Ngày chỉ định", infoValue: '25-05-2021'),
-          infoText(devideSize: 1, infoKey: "Chẩn đoán", infoValue: ''),
-          infoText(
-              devideSize: 1,
-              infoKey: 'Phụ trách XN',
-              infoValue: 'Nguyễn Văn B'),
-          infoText(devideSize: 1, infoKey: 'Giờ thực hiện', infoValue: '10:40'),
+          if (widget.data_interface != null &&
+              widget.data_interface!['doctor'] != null &&
+              widget.data_interface!['doctor']['fullname'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: 'Bác sĩ chỉ định',
+                infoValue: '${widget.data_interface!['doctor']['fullname']}'),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: 'Bác sĩ chỉ định', infoValue: ''),
+          ],
+          if (widget.data_interface != null &&
+              widget.data_interface!['created_at'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Ngày chỉ định",
+                infoValue: '${widget.data_interface!['created_at']}'),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: "Ngày chỉ định", infoValue: ''),
+          ],
+          if (widget.data_interface != null &&
+              widget.data_interface!['diagnose'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Chẩn đoán",
+                infoValue: '${widget.data_interface!['diagnose']}'),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: "Chẩn đoán", infoValue: ''),
+          ],
+          // infoText(
+          //     devideSize: 1,
+          //     infoKey: 'Phụ trách XN',
+          //     infoValue: 'Nguyễn Văn B'),
+          // infoText(devideSize: 1, infoKey: 'Giờ thực hiện', infoValue: '10:40'),
           ExpansionTile(
             title: Heading2(devideSize: 1, infoValue: 'Nội dung'),
             children: [
               Wrap(
                 children: [
-                  Table(
-                    border: TableBorder.all(),
-                    columnWidths: const <int, TableColumnWidth>{
-                      // 0: IntrinsicColumnWidth(),
-                      // 2: FixedColumnWidth(64),
-                      0: FlexColumnWidth(),
-                      1: FlexColumnWidth(),
-                      2: FlexColumnWidth(),
-                      3: FlexColumnWidth(),
-                    },
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: <TableRow>[
-                      TableRow(
-                        children: <Widget>[
-                          testHeaderText(content: "Yêu cầu"),
-                          testHeaderText(content: "Kết quả"),
-                          testHeaderText(content: "Đơn vị tính"),
-                          testHeaderText(content: "Khoảng tham chiếu"),
-                        ],
-                      ),
-                      TableRow(
-                        children: <Widget>[
-                          testHeaderText(content: "(Test requests)"),
-                          testHeaderText(content: "(Results)"),
-                          testHeaderText(content: "(Units)"),
-                          testHeaderText(content: "(Reference ranges)"),
-                        ],
-                      ),
-                    ],
-                  ),
-                  tableTest(),
-                  tableTest2(),
+                  // Table(
+                  //   border: TableBorder.all(),
+                  //   columnWidths: const <int, TableColumnWidth>{
+                  //     // 0: IntrinsicColumnWidth(),
+                  //     // 2: FixedColumnWidth(64),
+                  //     0: FlexColumnWidth(),
+                  //     1: FlexColumnWidth(),
+                  //     2: FlexColumnWidth(),
+                  //     3: FlexColumnWidth(),
+                  //   },
+                  //   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  //   children: <TableRow>[
+                  //     TableRow(
+                  //       children: <Widget>[
+                  //         testHeaderText(content: "Yêu cầu"),
+                  //         testHeaderText(content: "Kết quả"),
+                  //         testHeaderText(content: "Đơn vị tính"),
+                  //         testHeaderText(content: "Khoảng tham chiếu"),
+                  //       ],
+                  //     ),
+                  //     TableRow(
+                  //       children: <Widget>[
+                  //         testHeaderText(content: "(Test requests)"),
+                  //         testHeaderText(content: "(Results)"),
+                  //         testHeaderText(content: "(Units)"),
+                  //         testHeaderText(content: "(Reference ranges)"),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+                  if (widget.data_interface != null &&
+                      widget.data_interface!['details'] != null) ...[
+                    tableTest(data_interface: widget.data_interface),
+                  ],
+                  // tableTest2(),
                 ],
               ),
             ],
           ),
-          infoText(devideSize: 1, infoKey: 'Nhận xét', infoValue: ''),
+          // infoText(devideSize: 1, infoKey: 'Nhận xét', infoValue: ''),
         ],
       ),
     );
   }
 }
 
-class tableTest2 extends StatelessWidget {
-  const tableTest2({
-    Key? key,
-  }) : super(key: key);
+// class tableTest2 extends StatelessWidget {
+//   const tableTest2({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Table(
-      border: TableBorder.all(),
-      columnWidths: const <int, TableColumnWidth>{
-        // 0: IntrinsicColumnWidth(),
-        // 2: FixedColumnWidth(64),
-        0: FlexColumnWidth(),
-      },
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      children: <TableRow>[
-        TableRow(
-          children: <Widget>[
-            ExpansionTile(
-              title: testNameText(content: "Xét nghiệm sinh hóa máu"),
-              children: [
-                Wrap(
-                  children: [
-                    Table(
-                      border: TableBorder.all(),
-                      columnWidths: const <int, TableColumnWidth>{
-                        // 0: IntrinsicColumnWidth(),
-                        // 2: FixedColumnWidth(64),
-                        0: FlexColumnWidth(),
-                        1: FlexColumnWidth(),
-                        2: FlexColumnWidth(),
-                        3: FlexColumnWidth(),
-                      },
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      children: <TableRow>[
-                        TableRow(
-                          children: <Widget>[
-                            testText(content: "Nhóm máu ABO + Rh"),
-                            testText(content: "\"O\"(Rh Dương)"),
-                            testText(content: ""),
-                            testText(content: ""),
-                          ],
-                        ),
-                        for (int index = 0; index < 5; index++) ...[
-                          TableRow(
-                            children: <Widget>[
-                              testText(content: "Fiprinogen"),
-                              testText(content: "3.33"),
-                              testText(content: "g/l"),
-                              testText(content: "1.5 - 3.8"),
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Table(
+//       border: TableBorder.all(),
+//       columnWidths: const <int, TableColumnWidth>{
+//         // 0: IntrinsicColumnWidth(),
+//         // 2: FixedColumnWidth(64),
+//         0: FlexColumnWidth(),
+//       },
+//       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+//       children: <TableRow>[
+//         TableRow(
+//           children: <Widget>[
+//             ExpansionTile(
+//               title: testNameText(content: "Xét nghiệm sinh hóa máu"),
+//               children: [
+//                 Wrap(
+//                   children: [
+//                     Table(
+//                       border: TableBorder.all(),
+//                       columnWidths: const <int, TableColumnWidth>{
+//                         // 0: IntrinsicColumnWidth(),
+//                         // 2: FixedColumnWidth(64),
+//                         0: FlexColumnWidth(),
+//                         1: FlexColumnWidth(),
+//                         2: FlexColumnWidth(),
+//                         3: FlexColumnWidth(),
+//                       },
+//                       defaultVerticalAlignment:
+//                           TableCellVerticalAlignment.middle,
+//                       children: <TableRow>[
+//                         TableRow(
+//                           children: <Widget>[
+//                             testText(content: "Nhóm máu ABO + Rh"),
+//                             testText(content: "\"O\"(Rh Dương)"),
+//                             testText(content: ""),
+//                             testText(content: ""),
+//                           ],
+//                         ),
+//                         for (int index = 0; index < 5; index++) ...[
+//                           TableRow(
+//                             children: <Widget>[
+//                               testText(content: "Fiprinogen"),
+//                               testText(content: "3.33"),
+//                               testText(content: "g/l"),
+//                               testText(content: "1.5 - 3.8"),
+//                             ],
+//                           ),
+//                         ],
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class tableTest extends StatelessWidget {
-  const tableTest({
-    Key? key,
-  }) : super(key: key);
+  var data_interface;
+  tableTest({Key? key, required this.data_interface}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -190,48 +221,61 @@ class tableTest extends StatelessWidget {
       children: <TableRow>[
         TableRow(
           children: <Widget>[
-            ExpansionTile(
-              title: testNameText(content: "Xét nghiệm huyết học"),
-              children: [
-                Wrap(
-                  children: [
-                    Table(
-                      border: TableBorder.all(),
-                      columnWidths: const <int, TableColumnWidth>{
-                        // 0: IntrinsicColumnWidth(),
-                        // 2: FixedColumnWidth(64),
-                        0: FlexColumnWidth(),
-                        1: FlexColumnWidth(),
-                        2: FlexColumnWidth(),
-                        3: FlexColumnWidth(),
-                      },
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      children: <TableRow>[
-                        TableRow(
-                          children: <Widget>[
-                            testText(content: "Nhóm máu ABO + Rh"),
-                            testText(content: "\"O\"(Rh Dương)"),
-                            testText(content: ""),
-                            testText(content: ""),
-                          ],
-                        ),
-                        for (int index = 0; index < 5; index++) ...[
-                          TableRow(
-                            children: <Widget>[
-                              testText(content: "Fiprinogen"),
-                              testText(content: "3.33"),
-                              testText(content: "g/l"),
-                              testText(content: "1.5 - 3.8"),
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            testNameText(content: "${data_interface!['details']}"),
+            // ExpansionTile(
+            //   title: testNameText(content: "${data_interface!['details']}"),
+            //   children: [
+            //     Wrap(
+            //       children: [
+            //         Table(
+            //           border: TableBorder.all(),
+            //           columnWidths: const <int, TableColumnWidth>{
+            //             // 0: IntrinsicColumnWidth(),
+            //             // 2: FixedColumnWidth(64),
+            //             0: FlexColumnWidth(),
+            //             1: FlexColumnWidth(),
+            //             2: FlexColumnWidth(),
+            //             3: FlexColumnWidth(),
+            //           },
+            //           defaultVerticalAlignment:
+            //               TableCellVerticalAlignment.middle,
+            //           children: <TableRow>[
+            //             if (data_interface!['subclinical_request_details']
+            //                     .length >
+            //                 0) ...[
+            //               for (int index = 0;
+            //                   index <
+            //                       data_interface!['subclinical_request_details']
+            //                           .length;
+            //                   index++) ...[
+            //                 if (data_interface!['subclinical_request_details']
+            //                             [index] !=
+            //                         null &&
+            //                     data_interface!['subclinical_request_details']
+            //                             [index]['service'] !=
+            //                         null &&
+            //                     data_interface!['subclinical_request_details']
+            //                             [index]['service']['name'] !=
+            //                         null) ...[
+            //                   TableRow(
+            //                     children: <Widget>[
+            //                       testText(
+            //                           content:
+            //                               "${data_interface!['subclinical_request_details'][index]['service']['name']}"),
+            //                       testText(content: ""),
+            //                       testText(content: ""),
+            //                       testText(content: ""),
+            //                     ],
+            //                   ),
+            //                 ]
+            //               ],
+            //             ],
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ],
@@ -239,7 +283,19 @@ class tableTest extends StatelessWidget {
   }
 }
 
-class _ECGInfoState extends StatelessWidget {
+class _ECGInfoState extends StatefulWidget {
+  var data_interface;
+  _ECGInfoState({Key? key, required this.data_interface}) : super(key: key);
+
+  @override
+  State<_ECGInfoState> createState() => _ECGInfoStateState();
+}
+
+class _ECGInfoStateState extends State<_ECGInfoState> {
+  double _scale = 1.0;
+
+  var _previousScale = null;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -256,27 +312,105 @@ class _ECGInfoState extends StatelessWidget {
               ],
             ),
           ),
-          infoText(
-              devideSize: 1,
-              infoKey: "Ngày kết quả: ",
-              infoValue: "07/07/2020"),
-          Divider(
-            thickness: 5,
-          ),
-          infoText(
-              devideSize: 1,
-              infoKey: 'Kết luận: ',
-              infoValue: "Chưa phát hiện bất thường trên ECG"),
-          const Divider(
-            thickness: 5,
-          ),
-          infoText(
-              devideSize: 1,
-              infoKey: "Bác sĩ kết luận: ",
-              infoValue: "KL Nguyễn"),
-          Divider(
-            thickness: 5,
-          ),
+          if (widget.data_interface != null &&
+              widget.data_interface!['created_at'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Ngày kết quả: ",
+                infoValue: widget.data_interface!['created_at']
+                    .toString()
+                    .split('T')[0]),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: "Ngày kết quả: ", infoValue: ""),
+          ],
+          if (widget.data_interface != null &&
+              widget.data_interface!['thuong_subclinical_images'].length >
+                  0) ...[
+            for (int index = 0;
+                index <
+                    widget.data_interface!['thuong_subclinical_images'].length;
+                index++) ...[
+              if (widget.data_interface!['thuong_subclinical_images'][index] !=
+                      null &&
+                  widget.data_interface!['thuong_subclinical_images'][index]
+                          ['url'] !=
+                      null) ...[
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0))),
+                            // backgroundColor: Colors.white,
+                            content: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: size.width,
+                                    // height: size.height / 2,
+                                    child: Image.network(
+                                      '${widget.data_interface!['thuong_subclinical_images'][index]['url']}',
+                                      fit: BoxFit.cover, // Fixes border issues
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                          // Image.network(
+                          //   '${widget.data_interface!['thuong_subclinical_images'][index]['url']}',
+                          //   fit: BoxFit.cover, // Fixes border issues
+                          //   width: size.width - 17 * 3,
+                          // );
+                          // InteractiveViewer(
+                          //   panEnabled: false, // Set it to false
+                          //   boundaryMargin: EdgeInsets.all(size.width - 17 * 3),
+                          //   minScale: 0.5,
+                          //   maxScale: 2,
+                          //   child: Image.network(
+                          //     '${widget.data_interface!['thuong_subclinical_images'][index]['url']}',
+                          //     fit: BoxFit.cover, // Fixes border issues
+                          //     width: size.width - 17 * 3,
+                          //   ),
+                          // );
+                        },
+                        context: context,
+                      );
+                    }, // Image tapped
+                    child: Image.network(
+                      '${widget.data_interface!['thuong_subclinical_images'][index]['url']}',
+                      fit: BoxFit.cover, // Fixes border issues
+                      width: size.width - 17 * 3,
+                    ),
+                  ),
+                )
+              ]
+            ]
+          ],
+          if (widget.data_interface != null &&
+              widget.data_interface!['diagnose'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: 'Kết luận: ',
+                infoValue: "${widget.data_interface!['diagnose']}"),
+          ] else ...[
+            infoText(devideSize: 1, infoKey: 'Kết luận: ', infoValue: ""),
+          ],
+          if (widget.data_interface != null &&
+              widget.data_interface!['doctor'] != null &&
+              widget.data_interface!['doctor']['fullname'] != null) ...[
+            infoText(
+                devideSize: 1,
+                infoKey: "Bác sĩ kết luận: ",
+                infoValue: "${widget.data_interface!['doctor']['fullname']}"),
+          ] else ...[
+            infoText(
+                devideSize: 1, infoKey: "Bác sĩ kết luận: ", infoValue: ""),
+          ],
         ],
       ),
     );

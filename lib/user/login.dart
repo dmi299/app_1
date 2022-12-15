@@ -61,7 +61,7 @@ class _UserLoginState extends State<UserLogin> {
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             child: Icon(
                               Icons.person,
-                              color: Colors.black,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                           // labelText: 'Họ và tên',
@@ -88,7 +88,7 @@ class _UserLoginState extends State<UserLogin> {
                         }
                       },
 
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       // onSaved: (value) {
                       //   nameController.text = value!;
                       // },
@@ -123,7 +123,7 @@ class _UserLoginState extends State<UserLogin> {
                           ),
                           // labelText: 'Số điện thoại',
                           border: InputBorder.none,
-                          hintText: 'Nhập số điện thoại'),
+                          hintText: 'Nhập mật khẩu'),
                       validator: (value) {
                         if (value!.isEmpty ||
                             !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]+$')
@@ -133,7 +133,7 @@ class _UserLoginState extends State<UserLogin> {
                           return null;
                         }
                       },
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                     ),
                   ),
@@ -186,35 +186,145 @@ class _UserLoginState extends State<UserLogin> {
                             //       '''),
                             //     ));
                             var productsGraphQL2 = """
-                                            query MyQuery{
-                                              patient_users(where: {phone_number: {_eq: "${phonenumberController.text}"}, password: {_eq: "${passwordController.text}"}}, limit: 1) {
-                                                birthday
-                                                fullname
-                                                password
-                                                id
-                                                phone_number
-                                                patient {
-                                                  fullname
-                                                  gender
-                                                  email
-                                                  birthday
-                                                  age
-                                                  address
-                                                  created_at
-                                                  created_by
-                                                  id
-                                                  id_card_issue_date
-                                                  id_card_issue_place
-                                                  id_card_no
-                                                  medical_code
-                                                  note
-                                                  passport_no
-                                                  phone_number
-                                                }
-                                                patient_id
-                                              }
+                              query MyQuery{
+                                patient_users(where: {phone_number: {_eq: "${phonenumberController.text}"}, password: {_eq: "${passwordController.text}"}}, limit: 1) {
+                                  birthday
+                                  fullname
+                                  password
+                                  id
+                                  phone_number
+                                  patient {
+                                    fullname
+                                    gender
+                                    email
+                                    birthday
+                                    age
+                                    address
+                                    created_at
+                                    created_by
+                                    id
+                                    id_card_issue_date
+                                    id_card_issue_place
+                                    id_card_no
+                                    medical_code
+                                    note
+                                    passport_no
+                                    phone_number
+                                    patient_infos {
+                                      blood_group {
+                                        name
+                                      }
+                                      work_unit {
+                                        name
+                                      }
+                                      career {
+                                        name
+                                      }
+                                      country {
+                                        name
+                                      }
+                                      ethnic_group {
+                                        name
+                                      }
+                                    }
+                                    patient_hicards {
+                                      hi_number
+                                    }
+                                    medical_examinations {
+                                      breathing
+                                      clinic {
+                                        name
+                                      }
+                                      created_at
+                                      created_by
+                                      date_of_treatment
+                                      date_to_reexamination
+                                      diagnosis_icd
+                                      examine_doctor {
+                                        fullname
+                                      }
+                                      examine_date
+                                      examine_time
+                                      height
+                                      high_blood_pressure
+                                      id
+                                      low_blood_pressure
+                                      pulse
+                                      preliminary_diagnosis
+                                      service {
+                                        name
+                                      }
+                                      temperature
+                                      weight
+                                      clinical_sign
+                                      medical_examination_prescriptions {
+                                        id
+                                        note
+                                        prescriptions {
+                                          created_at
+                                          created_by
+                                          currency_unit {
+                                            name
+                                          }
+                                          dates
+                                          id
+                                          medicine {
+                                            medicine_name {
+                                              name
                                             }
-                                          """;
+                                          }
+                                          note
+                                          medicine_using {
+                                            name
+                                          }
+                                          number_of_times_per_day
+                                          quantity
+                                          quantity_evening
+                                          quantity_morning
+                                          quantity_night
+                                          quantity_noon
+                                          quantity_per_time
+                                        }
+                                      }
+                                    }
+                                    subclinical_requests {
+                                      id
+                                      clinic {
+                                        name
+                                      }
+                                      created_at
+                                      diagnose
+                                      details
+                                      note
+                                      service_group {
+                                        name
+                                      }
+                                      doctor {
+                                        fullname
+                                      }
+                                      subclinical_request_details {
+                                        service {
+                                          name
+                                        }
+                                      }
+                                      thuong_subclinical_images {
+                                        conclusion
+                                        describle
+                                        id
+                                        url
+                                      }
+                                      subclinical_results {
+                                        describe_text
+                                        describe
+                                        conclusion
+                                        id
+                                      }
+                                    }
+                                  }
+                                  patient_id
+                                }
+                              }
+                            """;
                             Future<QueryResult> sendRequest() async {
                               print("sending request");
                               var client2 = GraphQLProvider.of(context).value;
@@ -249,11 +359,9 @@ class _UserLoginState extends State<UserLogin> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                       } else {
-                                        print('có data');
-                                        print('completed');
                                         isUser = true;
-                                        var patient = value.data!['patient_users'][0];
-                                        print(value.data!['patient_users'][0]);
+                                        var patient =
+                                            value.data!['patient_users'][0];
                                         print(isUser);
                                         phone_number =
                                             value.data!['patient_users'][0]
@@ -264,108 +372,104 @@ class _UserLoginState extends State<UserLogin> {
                                           MaterialPageRoute(
                                             builder: (context) => Home(
                                               isUser: isUser,
-                                              patient:patient,
+                                              patient: patient,
                                             ),
                                           ),
                                         );
                                         showDialog(
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20.0))),
-                                                // backgroundColor: Colors.white,
-                                                content: SingleChildScrollView(
-                                                  child: ListBody(
-                                                    children: <Widget>[
-                                                      Column(
-                                                        children: <Widget>[
-                                                          // SizedBox(
-                                                          //   height: ,
-                                                          // )
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: <Widget>[
-                                                              const Icon(
-                                                                Icons
-                                                                    .arrow_back,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20.0))),
+                                              // backgroundColor: Colors.white,
+                                              content: SingleChildScrollView(
+                                                child: ListBody(
+                                                  children: <Widget>[
+                                                    Column(
+                                                      children: <Widget>[
+                                                        // SizedBox(
+                                                        //   height: ,
+                                                        // )
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            const Icon(
+                                                              Icons.arrow_back,
+                                                            ),
+                                                            Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      right: 20,
+                                                                      top: 30),
+                                                              child: Stack(
+                                                                children: const [
+                                                                  CircleAvatar(
+                                                                    minRadius:
+                                                                        30,
+                                                                    maxRadius:
+                                                                        65,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundImage:
+                                                                        AssetImage(
+                                                                      'images/baby-flower.png',
+                                                                    ),
+                                                                  )
+                                                                ],
                                                               ),
-                                                              Container(
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        right:
-                                                                            20,
-                                                                        top:
-                                                                            30),
-                                                                child: Stack(
-                                                                  children: const [
-                                                                    CircleAvatar(
-                                                                      minRadius:
-                                                                          30,
-                                                                      maxRadius:
-                                                                          65,
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      backgroundImage:
-                                                                          AssetImage(
-                                                                        'images/baby-flower.png',
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                      TextFormField(
-                                                        enabled: false,
-                                                        decoration:
-                                                            InputDecoration(
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.phone,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                                hintText:
-                                                                    phone_number,
-                                                                border:
-                                                                    InputBorder
-                                                                        .none),
-                                                      ),
-                                                      TextFormField(
-                                                        enabled: false,
-                                                        decoration:
-                                                            InputDecoration(
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.person,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                                hintText:
-                                                                    fullname,
-                                                                border:
-                                                                    InputBorder
-                                                                        .none),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                    TextFormField(
+                                                      enabled: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                              icon: const Icon(
+                                                                Icons.phone,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              hintText:
+                                                                  phone_number,
+                                                              border:
+                                                                  InputBorder
+                                                                      .none),
+                                                    ),
+                                                    TextFormField(
+                                                      enabled: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                              icon: const Icon(
+                                                                Icons.person,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              hintText:
+                                                                  fullname,
+                                                              border:
+                                                                  InputBorder
+                                                                      .none),
+                                                    ),
+                                                  ],
                                                 ),
-                                              );
-                                            },
-                                            context: context);
+                                              ),
+                                            );
+                                          },
+                                          context: context,
+                                        );
                                       }
                                     },
                                   );
