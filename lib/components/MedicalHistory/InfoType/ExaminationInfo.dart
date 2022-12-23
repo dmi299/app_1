@@ -20,7 +20,7 @@ class _ExaminationInfoState extends State<ExaminationInfo> {
     String namePatient;
     return Column(
       children: <Widget>[
-        TableExaminate(data_interface: data_interface),
+        TableExaminate(data_interface: widget.data_interface),
       ],
     );
   }
@@ -43,7 +43,7 @@ class _TableExaminateState extends State<TableExaminate> {
       alignment: Alignment.centerLeft,
       child: Wrap(
         children: <Widget>[
-          _ExpansionTileSubclinical(data_interface: data_interface),
+          _ExpansionTileSubclinical(data_interface: widget.data_interface),
         ],
       ),
     );
@@ -248,77 +248,78 @@ class Prescription extends StatelessWidget {
       titlePrescription += ' - ${prescription!['medicine_using']['name']}';
     }
     return SafeArea(
-        child: Wrap(
-      children: [
-        Heading3(
-            devideSize: 1,
-            infoKey: "\t${index + 1}. ",
-            infoValue: titlePrescription),
-        Container(
-          padding: EdgeInsets.all(17),
-          child: Wrap(
-            children: [
-              if (prescription != null && prescription!['dates'] != null) ...[
-                infoText(
-                    devideSize: 1,
-                    infoKey: "Số ngày điều trị",
-                    infoValue: '${prescription!['dates']}'),
+      child: Wrap(
+        children: [
+          Heading3(
+              devideSize: 1,
+              infoKey: "\t${index + 1}. ",
+              infoValue: titlePrescription),
+          Container(
+            padding: EdgeInsets.all(17),
+            child: Wrap(
+              children: [
+                if (prescription != null && prescription!['dates'] != null) ...[
+                  infoText(
+                      devideSize: 1,
+                      infoKey: "Số ngày điều trị",
+                      infoValue: '${prescription!['dates']}'),
+                ],
+                if (prescription != null && prescription!['note'] != null) ...[
+                  infoText(
+                      devideSize: 1,
+                      infoKey: "Ghi chú",
+                      infoValue: '${prescription!['note']}'),
+                ],
+                if (prescription != null &&
+                    prescription!['quantity_morning'] != null) ...[
+                  infoText(
+                      devideSize: 4,
+                      infoKey: "Sáng",
+                      infoValue: '${prescription!['quantity_morning']}'),
+                ] else ...[
+                  infoText(devideSize: 4, infoKey: "Sáng", infoValue: ''),
+                ],
+                if (prescription != null &&
+                    prescription!['quantity_evening'] != null) ...[
+                  infoText(
+                      devideSize: 4,
+                      infoKey: "Trưa",
+                      infoValue: '${prescription!['quantity_morning']}'),
+                ] else ...[
+                  infoText(devideSize: 4, infoKey: "Trưa", infoValue: ''),
+                ],
+                if (prescription != null &&
+                    prescription!['quantity_noon'] != null) ...[
+                  infoText(
+                      devideSize: 4,
+                      infoKey: "Chiều",
+                      infoValue: '${prescription!['quantity_noon']}'),
+                ] else ...[
+                  infoText(devideSize: 4, infoKey: "Chiều", infoValue: ''),
+                ],
+                if (prescription != null &&
+                    prescription!['quantity_night'] != null) ...[
+                  infoText(
+                      devideSize: 4,
+                      infoKey: "Tối",
+                      infoValue: '${prescription!['quantity_night']}'),
+                ] else ...[
+                  infoText(devideSize: 4, infoKey: "Tối", infoValue: ''),
+                ],
+                if (prescription != null &&
+                    prescription!['quantity'] != null) ...[
+                  infoText(
+                      devideSize: 1,
+                      infoKey: "Tổng cộng",
+                      infoValue: '${prescription!['quantity']}'),
+                ] else ...[
+                  infoText(devideSize: 1, infoKey: "Tổng cộng", infoValue: ''),
+                ],
               ],
-              if (prescription != null && prescription!['note'] != null) ...[
-                infoText(
-                    devideSize: 1,
-                    infoKey: "Ghi chú",
-                    infoValue: '${prescription!['note']}'),
-              ],
-              if (prescription != null &&
-                  prescription!['quantity_morning'] != null) ...[
-                infoText(
-                    devideSize: 4,
-                    infoKey: "Sáng",
-                    infoValue: '${prescription!['quantity_morning']}'),
-              ] else ...[
-                infoText(devideSize: 4, infoKey: "Sáng", infoValue: ''),
-              ],
-              if (prescription != null &&
-                  prescription!['quantity_evening'] != null) ...[
-                infoText(
-                    devideSize: 4,
-                    infoKey: "Trưa",
-                    infoValue: '${prescription!['quantity_morning']}'),
-              ] else ...[
-                infoText(devideSize: 4, infoKey: "Trưa", infoValue: ''),
-              ],
-              if (prescription != null &&
-                  prescription!['quantity_noon'] != null) ...[
-                infoText(
-                    devideSize: 4,
-                    infoKey: "Chiều",
-                    infoValue: '${prescription!['quantity_noon']}'),
-              ] else ...[
-                infoText(devideSize: 4, infoKey: "Chiều", infoValue: ''),
-              ],
-              if (prescription != null &&
-                  prescription!['quantity_night'] != null) ...[
-                infoText(
-                    devideSize: 4,
-                    infoKey: "Tối",
-                    infoValue: '${prescription!['quantity_night']}'),
-              ] else ...[
-                infoText(devideSize: 4, infoKey: "Tối", infoValue: ''),
-              ],
-              if (prescription != null &&
-                  prescription!['quantity'] != null) ...[
-                infoText(
-                    devideSize: 1,
-                    infoKey: "Tổng cộng",
-                    infoValue: '${prescription!['quantity']}'),
-              ] else ...[
-                infoText(devideSize: 1, infoKey: "Tổng cộng", infoValue: ''),
-              ],
-            ],
+            ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 }

@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
 
@@ -15,6 +17,7 @@ class _LoadingState extends State<Loading> {
   void setupLoadingTime() async {
     Future.delayed(const Duration(seconds: 5), () async {
       Navigator.pushReplacementNamed(context, '/home');
+      // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     });
   }
 
@@ -22,11 +25,12 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
     setupLoadingTime();
+    // setupStopCatureandRecord();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
         child: Image.asset(
@@ -34,13 +38,12 @@ class _LoadingState extends State<Loading> {
           width: 200,
           // scale: 1.0,
         ),
-          // padding: EdgeInsets.all(50.0),
-          // child: SpinKitThreeInOut(
-          //     color: Colors.white,
-          //     size: 50.0,
-          //     duration: Duration(milliseconds: 1200)),
-          ),
-        
+        // padding: EdgeInsets.all(50.0),
+        // child: SpinKitThreeInOut(
+        //     color: Colors.white,
+        //     size: 50.0,
+        //     duration: Duration(milliseconds: 1200)),
+      ),
     );
   }
 }

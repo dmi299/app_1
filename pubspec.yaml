@@ -39,6 +39,7 @@ dependencies:
   get: 4.3.8
   flutter_windowmanager: ^0.2.0
   cupertino_icons: ^1.0.5
+  fluttertoast: any
   # google_nav_bar: ^5.0.6
 
   # The following adds the Cupertino Icons font to your application.

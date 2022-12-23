@@ -21,7 +21,7 @@ class SummaryThreeYear extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       alignment: Alignment.centerLeft,
-      child: Column(
+      child: Wrap(
         children: <Widget>[
           if (SubType == "SumCLS")
             TableTest(
@@ -274,6 +274,10 @@ class _TableTestState extends State<TableTest> {
                                               testText(
                                                 content:
                                                     "${patient!['patient']['subclinical_requests'][index2]['subclinical_results'][0]['conclusion']}",
+                                              ),
+                                            ] else ...[
+                                              testText(
+                                                content: "",
                                               ),
                                             ]
                                           ],

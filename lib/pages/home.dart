@@ -185,10 +185,10 @@ class _HomeState extends State<Home> {
               value: Menu.itemOne,
               child: Text("Đăng nhập"),
             ),
-            const PopupMenuItem(
-              value: Menu.itemTwo,
-              child: Text("Đăng kí"),
-            ),
+            // const PopupMenuItem(
+            //   value: Menu.itemTwo,
+            //   child: Text("Đăng kí"),
+            // ),
           ],
         ),
       ],

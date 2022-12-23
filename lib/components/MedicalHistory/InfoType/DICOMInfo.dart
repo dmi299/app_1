@@ -7,8 +7,7 @@ class DICOMInfo extends StatefulWidget {
   DICOMInfo({Key? key, required this.data_interface}) : super(key: key);
   static const String _title = 'Flutter Code Sample';
   @override
-  State<DICOMInfo> createState() =>
-      _XQuangInfoState();
+  State<DICOMInfo> createState() => _XQuangInfoState();
 }
 
 class _XQuangInfoState extends State<DICOMInfo> {
@@ -27,8 +26,7 @@ class _XQuangInfoState extends State<DICOMInfo> {
 class TableExaminate extends StatefulWidget {
   var data_interface;
   TableExaminate({Key? key, required this.data_interface}) : super(key: key);
-  State<TableExaminate> createState() =>
-      _TableExaminateState();
+  State<TableExaminate> createState() => _TableExaminateState();
 }
 
 class _TableExaminateState extends State<TableExaminate> {
@@ -262,18 +260,23 @@ class _ExpansionTileSubclinical extends StatelessWidget {
                 ],
               ]
             ],
-            Container(
-              padding: const EdgeInsets.only(top: 17),
-              child: Wrap(
-                children: [
-                  Heading3(
-                      devideSize: 1,
-                      infoKey: 'Kết luận: ',
-                      infoValue:
-                          '\n\tHÌNH ẢNH X-QUANG TIM PHỔI THẲNG BÌNH THƯỜNG'),
-                ],
+            if (data_interface!['subclinical_results'] != null &&
+                data_interface!['subclinical_results'].length > 0 &&
+                data_interface!['subclinical_results'][0]['conclusion'] !=
+                    null) ...[
+              Container(
+                padding: const EdgeInsets.only(top: 17),
+                child: Wrap(
+                  children: [
+                    Heading3(
+                        devideSize: 1,
+                        infoKey: 'Kết luận: ',
+                        infoValue:
+                            '\n\t${data_interface!['subclinical_results'][0]['conclusion']}'),
+                  ],
+                ),
               ),
-            ),
+            ]
           ],
           // SafeArea(child: ExpantionPrescreption()),
         ],

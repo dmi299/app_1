@@ -1,3 +1,4 @@
+
 import 'package:app_1/pages/body.dart';
 import 'package:app_1/pages/controller/HomeController.dart';
 import 'package:app_1/pages/home.dart';
@@ -11,8 +12,8 @@ import 'package:app_1/components/MedicalHistory/InfoType/PatientInfo.dart';
 import 'package:app_1/components/MedicalHistory/InfoType/ExaminationInfo.dart';
 import 'package:app_1/components/MedicalHistory/InfoType/SubclinicalInfo.dart';
 import 'package:app_1/components/MedicalHistory/InfoType/DICOMInfo.dart';
-import 'package:app_1/components/MedicalHistory/InfoType/Secure.dart';
 import 'package:app_1/components/MedicalHistory/ExpansionPanelListMedicalHistory.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/state_manager.dart';
 import '../test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -34,11 +35,27 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   var data_interface = null;
   var subclinicalsCreateAts = [];
   var interface = null;
+  secureScreen() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    secureScreen();
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+
   // bool isTap = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print('data patient medical history: $patient');
+    // print('data patient medical history: $patient');
     // fetchFirstData;
     return Scaffold(
       appBar: AppBar(
@@ -72,10 +89,7 @@ class _MedicalHistoryState extends State<MedicalHistory> {
               DICOMInfo(
                 data_interface: data_interface,
               ),
-            ] else
-              ...[
-                HomeView(),
-              ]
+            ]
           ],
         ),
       ),
@@ -101,19 +115,6 @@ class _MedicalHistoryState extends State<MedicalHistory> {
             listTileSummaries(patient),
             listTileExaminations(patient),
             listTileSubclinicals(patient),
-            ListTile(
-              leading: Icon(Icons.summarize),
-              title: const Text(
-                'Page Secure',
-                // style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                setState(() {
-                  medicalHistoryType = "Secure";
-                });
-                Navigator.pop(context);
-              },
-            ),
           ],
         ),
       ),

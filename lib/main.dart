@@ -8,6 +8,7 @@ import 'package:app_1/user/login.dart';
 import 'package:app_1/user/register.dart';
 import 'package:flutter/material.dart';
 import 'package:app_1/pages/home.dart';
+
 void main() => runApp(MaterialApp(
       initialRoute: '/',
       debugShowCheckedModeBanner: false, //remove debug mode on appbar

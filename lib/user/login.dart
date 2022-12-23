@@ -485,42 +485,42 @@ class _UserLoginState extends State<UserLogin> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          "Bạn đã có tài khoản chưa ?",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<GraphQLWidgetScreen>(
-                                builder: (BuildContext context) =>
-                                    UserRegister(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Đăng kí",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "HOẶC",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     const Text(
+                    //       "Bạn đã có tài khoản chưa ?",
+                    //       style: TextStyle(color: Colors.white),
+                    //     ),
+                    //     TextButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute<GraphQLWidgetScreen>(
+                    //             builder: (BuildContext context) =>
+                    //                 UserRegister(),
+                    //           ),
+                    //         );
+                    //       },
+                    //       child: const Text(
+                    //         "Đăng kí",
+                    //         style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontWeight: FontWeight.bold),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Text(
+                    //     "HOẶC",
+                    //     style: TextStyle(
+                    //       color: Colors.white,
+                    //       fontWeight: FontWeight.w600,
+                    //     ),
+                    //   ),
+                    // ),
                     Divider(
                       height: 10,
                       thickness: 1,
