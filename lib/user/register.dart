@@ -9,7 +9,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class UserRegister extends StatefulWidget {
   UserRegister({Key? key}) : super(key: key);
-
   @override
   State<UserRegister> createState() => _UserRegisterState();
 }
@@ -31,6 +30,7 @@ class _UserRegisterState extends State<UserRegister> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print('_UserRegisterState');
     // final double height= MediaQuery.of(context).size.height;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
@@ -47,7 +47,7 @@ class _UserRegisterState extends State<UserRegister> {
                     affected_rows
                   }
                 }
-'''
+                '''
                   .replaceAll('\n', '')),
               onCompleted: (result) {
                 print('onCompleted called');
@@ -57,12 +57,30 @@ class _UserRegisterState extends State<UserRegister> {
                 return cache;
               },
             ),
-            
             builder: (RunMutation runMutation, QueryResult? result) {
               return Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(top: 17),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return Home(
+                                isUser: false,
+                                patient: "",
+                              );
+                            }));
+                          },
+                          child: Image.asset(
+                            'images/home.png',
+                            height: 40,
+                            width: 40,
+                          )),
+                    ),
                     Image.asset(
                       'images/logo-taimuihongsg.png',
                       width: 300,
@@ -246,7 +264,6 @@ class _UserRegisterState extends State<UserRegister> {
                           validator: (value) {
                             // add your custom validation here.
                             if (value!.isEmpty) {
-                              
                               return 'Vui lòng nhập mật khẩu';
                             }
                             if (value.length < 2) {
@@ -357,24 +374,80 @@ class _UserRegisterState extends State<UserRegister> {
                           ),
                           //button
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              //check if form data are valid,
-                              //your process task ahead if all data are valid
-                              final showdialog = showCupertinoDialog(//showdialog
+                            var productsGraphQL2 = r"""
+                              mutation MyMutation ($fullname: String!, $phone_number: String!, $password: String!) {
+                                insert_patient_users(objects: {fullname: $fullname,phone_number: $phone_number, password: $password}) {
+                                  affected_rows
+                                }
+                              }
+                            """;
+                            Future<QueryResult> sendRequest() async {
+                              print("sending request");
+                              var client2 = GraphQLProvider.of(context).value;
+                              var hello = await client2.mutate(MutationOptions(
+                                document: gql(productsGraphQL2),
+                              ));
+                              return hello;
+                            }
+
+                            void calcular() {
+                              setState(
+                                () {
+                                  print("Sending request");
+                                  sendRequest().then(
+                                    (value) {
+                                      print(value.data!['insert_patient_users']);
+
+                                      if (value.data == null ||
+                                          value.data!['insert_patient_users'].length ==
+                                              0) {
+                                        print('không có data');
+                                        final snackBar = SnackBar(
+                                          content: const Text(
+                                              'Đăng ký không thành công'),
+                                          action: SnackBarAction(
+                                            label: 'Thoát',
+                                            onPressed: () {
+                                              // Some code to undo the change.
+                                            },
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } else {
+                                        // isUser = true;
+                                        // var patient =
+                                        //     value.data!['patient_users'][0];
+                                        // print(isUser);
+                                        // phone_number =
+                                        //     value.data!['patient_users'][0]
+                                        //         ['phone_number'];
+                                        // fullname = value.data!['patient_users']
+                                        //     [0]['fullname'];
+                                        // Navigator.of(context).push(
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => Home(
+                                        //       isUser: isUser,
+                                        //       patient: patient,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                        showCupertinoDialog(
+                                //showdialog
                                 context: context,
                                 builder: (context) {
-                                  return CupertinoAlertDialog( //alertdialog
+                                  return CupertinoAlertDialog(
+                                    //alertdialog
                                     // backgroundColor: Colors.amber[100],
                                     content: SingleChildScrollView(
                                       child: ListBody(
                                         children: <Widget>[
                                           const Text(
-                                              'Bạn đã đăng kí tài khoản thành công ',
-                                              style: TextStyle(
+                                            'Bạn đã đăng kí tài khoản thành công ',
+                                            style: TextStyle(
                                                 fontSize: 26,
-                                                fontWeight: FontWeight.bold
-                                              ),
-                                              ),
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                           //icon
                                           Container(
                                             margin: const EdgeInsets.symmetric(
@@ -400,7 +473,6 @@ class _UserRegisterState extends State<UserRegister> {
                                                     phoneController.text,
                                                 'password':
                                                     passwordController.text,
-                                                
                                               });
                                               Navigator.push(
                                                 context,
@@ -418,8 +490,77 @@ class _UserRegisterState extends State<UserRegister> {
                                   );
                                 },
                               );
-                              // _scaffoldKey.currentState!.showSnackBar(dialog);
+                                      }
+                                    },
+                                  );
+                                },
+                              );
                             }
+
+                            calcular();
+                            // if (_formKey.currentState!.validate()) {
+                            //   //check if form data are valid,
+                            //   //your process task ahead if all data are valid
+                            //   final showdialog = showCupertinoDialog(
+                            //     //showdialog
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return CupertinoAlertDialog(
+                            //         //alertdialog
+                            //         // backgroundColor: Colors.amber[100],
+                            //         content: SingleChildScrollView(
+                            //           child: ListBody(
+                            //             children: <Widget>[
+                            //               const Text(
+                            //                 'Bạn đã đăng kí tài khoản thành công ',
+                            //                 style: TextStyle(
+                            //                     fontSize: 26,
+                            //                     fontWeight: FontWeight.bold),
+                            //               ),
+                            //               //icon
+                            //               Container(
+                            //                 margin: const EdgeInsets.symmetric(
+                            //                     horizontal: 10),
+                            //                 // padding: EdgeInsets.all(20),
+                            //                 decoration: BoxDecoration(
+                            //                   border: Border.all(
+                            //                     width: 4,
+                            //                     color: Colors.redAccent,
+                            //                   ),
+                            //                   shape: BoxShape.circle,
+                            //                 ),
+                            //                 height: 60,
+                            //                 width: 60,
+                            //                 child: Image.asset(
+                            //                     'images/register_success.png'),
+                            //               ),
+                            //               ElevatedButton(
+                            //                 onPressed: () {
+                            //                   runMutation({
+                            //                     'fullname': nameController.text,
+                            //                     'phone_number':
+                            //                         phoneController.text,
+                            //                     'password':
+                            //                         passwordController.text,
+                            //                   });
+                            //                   Navigator.push(
+                            //                     context,
+                            //                     MaterialPageRoute(
+                            //                       builder: (context) =>
+                            //                           const GraphQLWidgetScreen(),
+                            //                     ),
+                            //                   );
+                            //                 },
+                            //                 child: const Text('Đăng nhập ngay'),
+                            //               )
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       );
+                            //     },
+                            //   );
+                            //   // _scaffoldKey.currentState!.showSnackBar(dialog);
+                            // }
                           },
                           //----------
                           child: const Text(
@@ -531,7 +672,10 @@ class _UserRegisterState extends State<UserRegister> {
                                   onPressed: () {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return const Home();
+                                      return Home(
+                                        isUser: false,
+                                        patient: "",
+                                      );
                                     }));
                                   },
                                   child: Image.asset(

@@ -35,8 +35,45 @@ class GraphQLWidgetScreen extends StatelessWidget {
         home: const UserLogin(),
         routes: {
           // '/': ((context) => const UserLogin()),
-          '/home': (((context) => const Home())),
+          '/home': (((context) => Home(isUser: false,patient: "",))),
           '/register': ((context) => UserRegister()),
+          // '/adduser': (context) =>   adduser()
+        },
+      ),
+    );
+  }
+}
+class GraphQLWidgetScreenRegister extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
+  const GraphQLWidgetScreenRegister() : super();
+  get textToSend => null;
+  @override
+  Widget build(BuildContext context) {
+    final httpLink = HttpLink('https://enthms-graphql.safiwis.com/v1/graphql',
+        defaultHeaders: {
+          'X-Hasura-Admin-Secret': 'Admin@hmssecret123',
+        });
+    final authLink = AuthLink(
+      // ignore: undefined_identifier
+      getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
+      // 'Bearer mmMAHGD13s5FVrfVrL09cuq88W64E5sz4gXNeC477ZOfl6s44VMhfs5q2vaZfKXB',
+    );
+    var link = authLink.concat(httpLink);
+    final client = ValueNotifier<GraphQLClient>(
+      GraphQLClient(
+        cache: GraphQLCache(),
+        link: link,
+      ),
+    );
+    return GraphQLProvider(
+      client: client,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: UserRegister(),
+        routes: {
+          // '/': ((context) => const UserLogin()),
+          '/home': (((context) => Home(isUser: false,patient: "",))),
+          '/login': ((context) => const UserLogin()),
           // '/adduser': (context) =>   adduser()
         },
       ),

@@ -150,29 +150,44 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 enum Menu { itemOne, itemTwo }
 
 class adduser extends StatefulWidget {
-  const adduser({
-    Key? key,
-  }) : super(key: key);
+  String patient;
+  adduser({Key? key, required this.patient}) : super(key: key);
 
   @override
-  State<adduser> createState() => _adduserState();
+  State<adduser> createState() => _adduserState(patient: patient);
 }
 
 class _adduserState extends State<adduser> {
+  String patient;
+  _adduserState({Key? key, required this.patient});
   int _selectedIndex = 0;
+  Widget page = Body();
   void onTap(int index) {
     setState(() {
       _selectedIndex = index;
+      if (index == 0) {
+        page = const Body();
+      } else if (index == 1) {
+        page = const Apoitment();
+      } else if (index == 2) {
+        page = MedicalHistory(
+          patient: patient,
+        );
+      } else if (index == 3) {
+        page = const Parking();
+      } else if (index == 4) {
+        page = const Map();
+      }
     });
   }
 
-  List pages = [
-    const Body(),
-    const Apoitment(),
-    const MedicalHistory(),
-    const Parking(),
-    const Map()
-  ];
+  // List pages = [
+  //   const Body(),
+  //   const Apoitment(),
+  //   const MedicalHistory(),
+  //   const Parking(),
+  //   const Map()
+  // ];
   TextEditingController phoneController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
@@ -180,7 +195,7 @@ class _adduserState extends State<adduser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: pages[_selectedIndex],
+      body: page,
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -324,8 +339,8 @@ class _adduserState extends State<adduser> {
 }
 
 class AccountInfo extends StatelessWidget {
-  Future<dynamic> showDialogLogin ;
-  
+  Future<dynamic> showDialogLogin;
+
   AccountInfo({Key? key, required this.showDialogLogin}) : super(key: key);
 
   @override
@@ -333,24 +348,16 @@ class AccountInfo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Second screen')),
       body: Center(
-        
         child: ElevatedButton(
-          
           child: const Text(
             'here',
-            
-            ),
-          
-          onPressed:
-          () {
-            
+          ),
+          onPressed: () {
             showDialog(
                 context: context,
-                builder: (context) { 
+                builder: (context) {
                   return const AlertDialog(
-                    content: SingleChildScrollView(
-                          
-                    ),
+                    content: SingleChildScrollView(),
                   );
                 });
           },
